@@ -3,13 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class inventory extends Model
+class Inventory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
         'quantity',
+        'category',
     ];
+
+
+    public function isAvailable()
+    {
+        return $this->quantity > 0;
+    }
 }
