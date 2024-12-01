@@ -1,5 +1,3 @@
-
-
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -22,7 +20,7 @@
                         class="flex-1 bg-gray-800 text-white text-center font-semibold py-4 px-1 rounded-xl shadow-lg hover:bg-gray-900 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ease-out">
                         Lihat Permohonan
                     </a>
-                    <a href="/pemohon/inventori/lihat-inventori" 
+                    <a href="{{ route('pemohon.inventori.lihat') }}" 
                         class="flex-1 bg-gray-800 text-white text-center font-semibold py-4 px-1 rounded-xl shadow-lg hover:bg-gray-900 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ease-out">
                         Lihat Inventori
                     </a>
