@@ -34,16 +34,16 @@
                                 @foreach($categories as $category)
                                     <option value="{{ $category }}">{{ $category }}</option>
                                 @endforeach
-                                <!-- <option value="new">+ Kategori Baru</option> -->
+                                <option value="new">+ Kategori Baru</option>
                             </select>
                         </div>
 
                         <!-- Hidden input for new category -->
-                        <!-- <div id="newCategoryInput" class="hidden">
+                        <div id="newCategoryInput" class="hidden">
                             <label for="new_category" class="block text-sm font-medium text-gray-700">Kategori Baru</label>
                             <input type="text" name="new_category" id="new_category"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        </div> -->
+                        </div>
 
                         <button type="submit" 
                             class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -56,16 +56,19 @@
     </div>
 
     <!-- JavaScript for handling new category input -->
-    <!-- <script>
+    <script>
         document.getElementById('category').addEventListener('change', function() {
             const newCategoryInput = document.getElementById('newCategoryInput');
+            const newCategoryField = document.getElementById('new_category');
             if (this.value === 'new') {
                 newCategoryInput.classList.remove('hidden');
-                document.getElementById('new_category').required = true;
+                newCategoryField.required = true;
+                newCategoryField.name = 'new_category';
             } else {
                 newCategoryInput.classList.add('hidden');
-                document.getElementById('new_category').required = false;
+                newCategoryField.required = false;
+                newCategoryField.name = '';
             }
         });
-    </script> -->
+    </script>
 </body>

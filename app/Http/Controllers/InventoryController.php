@@ -62,13 +62,13 @@ class InventoryController extends Controller
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
             'category' => 'required|string|max:255',
-            // 'new_category' => 'required_if:category,new|string|max:255',
+            'new_category' => 'required_if:category,new|string|max:255',
         ]);
 
         // Use new category if provided
-        // if ($request->category === 'new' && $request->filled('new_category')) {
-        //     $validated['category'] = $request->new_category;
-        // }
+        if ($request->category === 'new' && $request->filled('new_category')) {
+            $validated['category'] = $request->new_category;
+        }
 
         Inventory::create($validated);
 
