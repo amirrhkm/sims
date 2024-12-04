@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use App\Models\BorrowingRequest;
 
 class InventoryController extends Controller
 {
@@ -28,6 +29,75 @@ class InventoryController extends Controller
                             ->withQueryString();
 
         return view('pemohon.inventori-lihat-inventori', compact('inventories'));
+    }
+
+    /*
+    * [PEMOHON] Show form for borrowing request.
+    */
+    public function showBorrowingRequestForm()
+    {
+        $inventories = Inventory::orderBy('category')
+                                ->orderBy('name')
+                                ->get();
+        return view('pemohon.inventori-borang-permohonan', compact('inventories'));
+    }
+
+    /*
+    * [PEMOHON] Simpan permohonan.
+    */
+    public function simpanPermohonan(Request $request)
+    {
+        $validated = $request->validate([
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+            'items' => 'required|array|min:1|max:8',
+            'items.*.id' => 'required|exists:inventories,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+    
+        $borrowingRequest = new BorrowingRequest();
+        $borrowingRequest->user_id = auth()->id();
+        $borrowingRequest->start_time = $validated['start_time'];
+        $borrowingRequest->end_time = $validated['end_time'];
+        $borrowingRequest->items = json_encode($validated['items']);
+        $borrowingRequest->status = 'pending';
+
+        if (!$borrowingRequest->isValidDateRange()) {
+            return back()->withErrors(['date' => 'Tarikh tamat mestilah selepas tarikh mula.']);
+        }
+
+        $borrowingRequest->save();
+    
+        return redirect()->route('pemohon.inventori')
+                         ->with('success', 'Permohonan berjaya dihantar.');
+    }
+
+    /**
+     * [PEMOHON] Display borrowing requests.
+     */
+    public function lihatPermohonan()
+    {
+        $borrowingRequests = BorrowingRequest::currentUser()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('pemohon.inventori-lihat-permohonan', compact('borrowingRequests'));
+    }
+
+    /**
+     * [PEMOHON] Delete borrowing request.
+     */
+    public function hapusPermohonan($id)
+    {
+        $request = BorrowingRequest::currentUser()->findOrFail($id);
+        
+        // Don't allow deletion of approved requests
+        if ($request->status === 'Diluluskan') {
+            return back()->with('error', 'Permohonan yang telah diluluskan tidak boleh dipadam.');
+        }
+
+        $request->delete();
+        return back()->with('success', 'Permohonan berjaya dipadam.');
     }
 
     // ---------------------------------- Controller for "Pengurus" ----------------------------------

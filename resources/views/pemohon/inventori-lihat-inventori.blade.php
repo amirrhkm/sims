@@ -11,7 +11,7 @@
         <div class="flex-1 p-8">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-6 flex justify-between items-center">
-                    <h1 class="text-2xl font-semibold text-gray-900">Senarai Inventori</h1>
+                    <h1 class="text-2xl font-semibold text-gray-900">Senarai Item</h1>
                     
                     <!-- Search Section -->
                     <form action="{{ route('pemohon.inventori.lihat') }}" method="GET" class="flex gap-4">
