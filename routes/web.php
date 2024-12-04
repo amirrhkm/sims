@@ -59,15 +59,23 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/inventori', function () {
             return view('pemohon.inventori-main');
-        });
+        })->name('pemohon.inventori');
     
-        Route::get('/inventori/borang-permohonan', function () {
-            return view('pemohon.inventori-borang-permohonan');
-        });
+        Route::get('/inventori/borang-permohonan',
+            [InventoryController::class, 'showBorrowingRequestForm'])
+            ->name('pemohon.inventori-borang-permohonan');
     
-        Route::get('/inventori/lihat-permohonan', function () {
-            return view('pemohon.inventori-lihat-permohonan');
-        });
+        Route::post('/inventori/borang-permohonan',
+            [InventoryController::class, 'simpanPermohonan'])
+            ->name('pemohon.inventori-borang-permohonan');
+    
+        Route::get('/inventori/lihat-permohonan',
+            [InventoryController::class, 'lihatPermohonan'])
+            ->name('pemohon.inventori-lihat-permohonan');
+
+        Route::delete('/inventori/hapus-permohonan/{id}', 
+            [InventoryController::class, 'hapusPermohonan'])
+            ->name('pemohon.inventori-hapus-permohonan');
     
         Route::get('/inventori/lihat-inventori', [InventoryController::class, 'index'])
             ->name('pemohon.inventori.lihat');
