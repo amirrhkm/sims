@@ -31,8 +31,8 @@ class AuthController extends Controller
 
         // If authentication fails
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
+            'name' => 'The provided credentials do not match our records.',
+        ])->onlyInput('name');
     }
 
     public function logout(Request $request)
