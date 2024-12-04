@@ -16,10 +16,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@sims.com',
-            'password' => Hash::make('admin'),
+            'name' => 'pengurus',
+            'email' => 'pengurus@sims.com',
+            'password' => Hash::make('123456789'),
             'role' => 'pengurus',
+        ]);
+
+        User::factory()->create([
+            'name' => 'pemohon',
+            'email' => 'pemohon@sims.com',
+            'password' => Hash::make('123456789'),
+            'role' => 'pemohon',
         ]);
 
         Inventory::factory(20)->create();
