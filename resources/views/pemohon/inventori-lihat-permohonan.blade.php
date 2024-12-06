@@ -58,7 +58,7 @@
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <ul class="list-disc list-inside">
                                                 @foreach($request->formatted_items as $item)
-                                                    <li>{{ $item['name'] }} ({{ $item['quantity'] }} unit)</li>
+                                                    <li>{{ $item['name'] }}</li>
                                                 @endforeach
                                             </ul>
                                         </td>
