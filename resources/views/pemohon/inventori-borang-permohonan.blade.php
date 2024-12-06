@@ -39,24 +39,25 @@
                     <!-- Dynamic Item Selection -->
                     <div id="itemSelections">
                         <div class="mb-4 grid grid-cols-12 gap-4 items-end">
-                            <div class="col-span-6">
+                            <div class="col-span-11">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Item</label>
                                 <select name="items[0][id]" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                     <option value="">Pilih Item</option>
                                     @foreach($inventories->groupBy('category') as $category => $items)
-                                        <optgroup label="{{ $category }}">
-                                            @foreach($items as $item)
-                                                <option value="{{ $item->id }}" data-max="{{ $item->quantity }}">
-                                                    {{ $item->name }} (Stok: {{ $item->quantity }})
-                                                </option>
-                                            @endforeach
-                                        </optgroup>
+                                        @if($items->where('quantity', '>', 0)->count() > 0)
+                                            <optgroup label="{{ $category }}">
+                                                @foreach($items as $item)
+                                                    @if($item->quantity > 0)
+                                                        <option value="{{ $item->id }}">
+                                                            {{ $item->name }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </optgroup>
+                                        @endif
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="col-span-5">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Kuantiti</label>
-                                <input type="number" name="items[0][quantity]" min="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                <input type="hidden" name="items[0][quantity]" value="1">
                             </div>
                             <div class="col-span-1">
                                 <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -97,7 +98,7 @@
                 const rows = itemSelections.children;
                 Array.from(rows).forEach((row, index) => {
                     const select = row.querySelector('select');
-                    const input = row.querySelector('input[type="number"]');
+                    const input = row.querySelector('input[type="hidden"]');
                     if (select) select.name = `items[${index}][id]`;
                     if (input) input.name = `items[${index}][quantity]`;
                 });
@@ -111,7 +112,6 @@
 
                 const newItem = itemSelections.children[0].cloneNode(true);
                 newItem.querySelector('select').value = '';
-                newItem.querySelector('input').value = '';
                 itemSelections.appendChild(newItem);
                 itemCount++;
                 updateNameAttributes();
@@ -132,11 +132,9 @@
                 }
             });
 
-            // Add event listeners for quantity validation
+            // Check for duplicate items
             itemSelections.addEventListener('change', function(e) {
                 if (e.target.tagName === 'SELECT') {
-
-                    // Check for duplicate items
                     const selectedId = e.target.value;
                     const selects = itemSelections.querySelectorAll('select');
                     let duplicateFound = false;
@@ -150,14 +148,7 @@
                     if (duplicateFound) {
                         alert('Item ini telah dipilih. Sila pilih item lain.');
                         e.target.value = '';
-                        return;
                     }
-
-                    const selectedOption = e.target.options[e.target.selectedIndex];
-                    const maxQuantity = selectedOption.dataset.max;
-                    const quantityInput = e.target.closest('.grid').querySelector('input[type="number"]');
-                    quantityInput.max = maxQuantity;
-                    quantityInput.value = Math.min(quantityInput.value || 1, maxQuantity);
                 }
             });
         });
