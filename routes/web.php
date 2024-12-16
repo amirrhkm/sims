@@ -74,13 +74,17 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/pengguna/hapus/{id}',
             [AccountController::class, 'destroy'])
             ->name('pengurus.pengguna-hapus');
+
+        Route::get('/pengguna/show/{id}',
+            [AccountController::class, 'show'])
+            ->name('pengurus.pengguna-show');
     });
 
     // ---------------------------------- Route for "Pemohon" ----------------------------------
     Route::middleware(['handle:pemohon'])->prefix('pemohon')->group(function () {
         Route::get('/dashboard', function () {
             return view('pemohon.dashboard');
-        });
+        })->name('pemohon.dashboard');
     
         Route::get('/inventori', function () {
             return view('pemohon.inventori-main');
@@ -104,5 +108,9 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/inventori/lihat-inventori', [InventoryController::class, 'index'])
             ->name('pemohon.inventori.lihat');
+
+        Route::get('/pengguna/show/{id}',
+            [AccountController::class, 'show'])
+            ->name('pemohon.pengguna-show');
     });
 });
