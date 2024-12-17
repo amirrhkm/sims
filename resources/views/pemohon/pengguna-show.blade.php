@@ -54,6 +54,10 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <!-- Add notice about contacting admin -->
+                                    <div class="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
+                                        <p>Sekiranya terdapat maklumat yang tidak tepat, sila hubungi pentadbir sistem di <a href="mailto:admin@sims.com" class="text-blue-600 hover:underline">admin@sims.com</a></p>
+                                    </div>
                                     <div class="mt-3 text-red-500 font-semibold hover:text-red-600">
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">
                                             <i class="fas fa-arrow-left"></i> Kembali
