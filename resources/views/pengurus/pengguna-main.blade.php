@@ -78,6 +78,8 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Nama</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Jabatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Seksyen/Unit</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Tindakan</th>
                                 </tr>
                             </thead>
@@ -86,6 +88,8 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->department }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->section }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
                                         <div class="flex space-x-2 justify-end">
                                             <a href="{{ route('pengurus.pengguna-edit', $user->id) }}" 
