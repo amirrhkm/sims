@@ -260,6 +260,19 @@ class InventoryController extends Controller
     public function returnedRequest($id)
     {
         $borrowingRequest = BorrowingRequest::findOrFail($id);
+        
+        // Only process return if the request was previously approved
+        if ($borrowingRequest->status === 'approved') {
+            $items = json_decode($borrowingRequest->items, true);
+            
+            foreach ($items as $item) {
+                $inventory = Inventory::findOrFail($item['id']);
+                // Add the quantity back to inventory
+                $inventory->quantity += $item['quantity'];
+                $inventory->save();
+            }
+        }
+
         $borrowingRequest->status = 'returned';
         $borrowingRequest->save();
 

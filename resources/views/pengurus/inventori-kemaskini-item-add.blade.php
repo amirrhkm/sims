@@ -27,15 +27,22 @@
                         </div>
 
                         <div>
-                            <label for="category" class="block text-sm font-medium text-gray-700">Kategori</label>
-                            <select name="category" id="category" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <option value="">Pilih Kategori</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                            <div class="space-y-2">
                                 @foreach($categories as $category)
-                                    <option value="{{ $category }}">{{ $category }}</option>
+                                    <div class="flex items-center">
+                                        <input type="radio" name="category" id="category_{{ $loop->index }}" 
+                                            value="{{ $category }}" class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                            required>
+                                        <label for="category_{{ $loop->index }}" class="ml-2 text-sm text-gray-700">{{ $category }}</label>
+                                    </div>
                                 @endforeach
-                                <option value="new">+ Kategori Baru</option>
-                            </select>
+                                <div class="flex items-center">
+                                    <input type="radio" name="category" id="new_category_radio" value="new"
+                                        class="border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <label for="new_category_radio" class="ml-2 text-sm text-gray-700">Kategori Baru</label>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Hidden input for new category -->
@@ -55,20 +62,30 @@
         </div>
     </div>
 
-    <!-- JavaScript for handling new category input -->
+    <!-- Updated JavaScript for handling new category input -->
     <script>
-        document.getElementById('category').addEventListener('change', function() {
+        document.getElementById('new_category_radio').addEventListener('change', function() {
             const newCategoryInput = document.getElementById('newCategoryInput');
             const newCategoryField = document.getElementById('new_category');
-            if (this.value === 'new') {
+            if (this.checked) {
                 newCategoryInput.classList.remove('hidden');
                 newCategoryField.required = true;
-                newCategoryField.name = 'new_category';
             } else {
                 newCategoryInput.classList.add('hidden');
                 newCategoryField.required = false;
-                newCategoryField.name = '';
+                newCategoryField.value = ''; // Clear the input when hidden
             }
+        });
+
+        // Hide new category input when other radio buttons are selected
+        document.querySelectorAll('input[name="category"]:not(#new_category_radio)').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const newCategoryInput = document.getElementById('newCategoryInput');
+                const newCategoryField = document.getElementById('new_category');
+                newCategoryInput.classList.add('hidden');
+                newCategoryField.required = false;
+                newCategoryField.value = '';
+            });
         });
     </script>
 </body>
