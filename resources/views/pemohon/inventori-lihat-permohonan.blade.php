@@ -7,7 +7,7 @@
         <x-pemohon-sidebar />
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-7xl mx-auto">
                 <h1 class="text-2xl font-semibold text-gray-900 mb-6">Senarai Permohonan</h1>
 
@@ -29,6 +29,9 @@
                             <thead>
                                 <tr>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        ID
+                                    </th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Tarikh Permohonan
                                     </th>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -49,6 +52,9 @@
                                 @forelse($borrowingRequests as $request)
                                     <tr>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            {{ $request->id }}
+                                        </td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             {{ $request->created_at->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -64,27 +70,49 @@
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->status === 'Diluluskan') bg-green-100 text-green-800
-                                                @elseif($request->status === 'Ditolak') bg-red-100 text-red-800
+                                                @if($request->status === 'approved') bg-green-100 text-green-800
+                                                @elseif($request->status === 'rejected') bg-red-100 text-red-800
                                                 @else bg-yellow-100 text-yellow-800
                                                 @endif">
-                                                {{ $request->status ?? 'Dalam Proses' }}
+                                                {{ $request->status ?? 'pending' }}
                                             </span>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <form action="{{ route('pemohon.inventori-hapus-permohonan', $request->id) }}" 
-                                                  method="POST" 
-                                                  onsubmit="return confirm('Adakah anda pasti untuk memadamkan permohonan ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" 
-                                                        class="text-red-600 hover:text-red-900"
-                                                        {{ $request->status === 'Diluluskan' ? 'disabled' : '' }}>
-                                                    Padam
-                                                </button>
-                                            </form>
+                                            @if($request->status === 'pending')
+                                                <form action="{{ route('pemohon.inventori-hapus-permohonan', $request->id) }}" 
+                                                    method="POST" 
+                                                    onsubmit="return confirm('Adakah anda pasti untuk memadamkan permohonan ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="text-red-600 hover:text-red-900"
+                                                            {{ $request->status === 'approved' ? 'disabled' : '' }}>
+                                                        Padam
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
+                                    @if ($request->status === 'rejected')
+                                        <tr>
+                                            <td colspan="6" class="px-5 py-1 border-b border-gray-200 bg-red-50">
+                                                <div class="flex items-center justify-center">
+                                                    <svg class="w-4 h-4 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                    @if($request->remarks)
+                                                        <span class="text-red-600 font-medium text-sm">
+                                                            ID: {{ $request->id }} - {{ $request->remarks }}
+                                                        </span>
+                                                    @else
+                                                        <span class="text-red-600 font-medium text-sm">
+                                                            ID: {{ $request->id }} - Permohonan ditolak
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="5" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
