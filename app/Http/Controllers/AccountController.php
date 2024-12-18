@@ -86,7 +86,7 @@ class AccountController extends Controller
 
         $user->update($userData);
 
-        return redirect()->route('pengurus.pengguna-edit', $id)
+        return redirect()->route('pengurus.pengguna')
             ->with('success', 'Pengguna berjaya diubah.');
     }
 
