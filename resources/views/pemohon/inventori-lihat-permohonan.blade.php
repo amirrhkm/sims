@@ -58,8 +58,12 @@
                                             {{ $request->created_at->format('d/m/Y H:i') }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            {{ $request->start_time->format('d/m/Y H:i') }} hingga<br>
-                                            {{ $request->end_time->format('d/m/Y H:i') }}
+                                            {{ $request->start_time->format('d/m/Y') }}<br>
+                                            hingga<br>
+                                            {{ $request->end_time->format('d/m/Y') }}<br>
+                                            <span class="text-gray-600 text-xs">
+                                                ({{ $request->end_time->diff($request->start_time)->format('%d hari') }})
+                                            </span>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <ul class="list-disc list-inside">
@@ -72,6 +76,7 @@
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                                 @if($request->status === 'approved') bg-green-100 text-green-800
                                                 @elseif($request->status === 'rejected') bg-red-100 text-red-800
+                                                @elseif($request->status === 'returned') bg-blue-100 text-blue-800
                                                 @else bg-yellow-100 text-yellow-800
                                                 @endif">
                                                 {{ $request->status ?? 'pending' }}

@@ -65,11 +65,11 @@
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">Tarikh Mula</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->start_time->format('d/m/Y H:i') }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->start_time->format('d/m/Y') }}</p>
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">Tarikh Tamat</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->end_time->format('d/m/Y H:i') }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->end_time->format('d/m/Y') }}</p>
                         </div>
                     </div>
                 </div>
