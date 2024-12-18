@@ -61,6 +61,7 @@ class InventoryController extends Controller
         $borrowingRequest->end_time = $validated['end_time'];
         $borrowingRequest->items = json_encode($validated['items']);
         $borrowingRequest->status = 'pending';
+        $borrowingRequest->remarks = '';
 
         if (!$borrowingRequest->isValidDateRange()) {
             return back()->withErrors(['date' => 'Tarikh tamat mestilah selepas tarikh mula.']);
@@ -92,7 +93,7 @@ class InventoryController extends Controller
         $request = BorrowingRequest::currentUser()->findOrFail($id);
         
         // Don't allow deletion of approved requests
-        if ($request->status === 'Diluluskan') {
+        if ($request->status === 'approved') {
             return back()->with('error', 'Permohonan yang telah diluluskan tidak boleh dipadam.');
         }
 
@@ -201,5 +202,69 @@ class InventoryController extends Controller
     {
         $categories = Inventory::select('category')->distinct()->pluck('category');
         return view('pengurus.inventori-kemaskini-item-add', compact('categories'));
+    }
+
+    public function reviewRequest()
+    {
+        $borrowingRequests = BorrowingRequest::with('user')->latest()->get();
+        return view('pengurus.inventori-semak-permohonan', compact('borrowingRequests'));
+    }
+
+    public function showRequest($id)
+    {
+        $borrowingRequest = BorrowingRequest::findOrFail($id);
+        return view('pengurus.inventori-semak-permohonan-show', compact('borrowingRequest'));
+    }
+
+    public function updateRequest(Request $request, $id)
+    {
+        $borrowingRequest = BorrowingRequest::findOrFail($id);
+        $borrowingRequest->status = $request->action;
+
+        // If request is approved, deduct quantities from inventory
+        if ($request->action === 'approved') {
+            $items = json_decode($borrowingRequest->items, true);
+            
+            foreach ($items as $item) {
+                $inventory = Inventory::findOrFail($item['id']);
+                
+                // Check if there's enough quantity available
+                if ($inventory->quantity < $item['quantity']) {
+                    return redirect()->back()->with('error', 
+                        "Kuantiti tidak mencukupi untuk item '{$inventory->name}'. Baki: {$inventory->quantity}");
+                }
+                
+                // Deduct the quantity
+                $inventory->quantity -= $item['quantity'];
+                $inventory->save();
+            }
+        }
+
+        if ($request->start_time) {
+            $borrowingRequest->start_time = $request->start_time;
+        }
+        if ($request->end_time) {
+            $borrowingRequest->end_time = $request->end_time;
+        }
+        if ($request->remarks) {
+            $borrowingRequest->remarks = $request->remarks;
+        }
+
+        $borrowingRequest->save();
+        
+        return redirect()
+            ->route('pengurus.inventori.permohonan.index')
+            ->with('success', 'Permohonan berjaya dikemaskini.');
+    }
+
+    public function returnedRequest($id)
+    {
+        $borrowingRequest = BorrowingRequest::findOrFail($id);
+        $borrowingRequest->status = 'returned';
+        $borrowingRequest->save();
+
+        return redirect()
+            ->route('pengurus.inventori.permohonan.index')
+            ->with('success', 'Permohonan berjaya dikembalikan.');
     }
 }

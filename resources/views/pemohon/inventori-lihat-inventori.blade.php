@@ -8,7 +8,7 @@
         <x-pemohon-sidebar />
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-6 flex justify-between items-center">
                     <h1 class="text-2xl font-semibold text-gray-900">Senarai Item</h1>

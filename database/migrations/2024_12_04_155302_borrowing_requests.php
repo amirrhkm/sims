@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('end_time');
             $table->json('items');
             $table->string('status')->default('pending');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

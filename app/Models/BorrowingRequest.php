@@ -18,6 +18,7 @@ class BorrowingRequest extends Model
         'end_time',
         'items',
         'status',
+        'remarks',
     ];
 
     /**
@@ -30,6 +31,7 @@ class BorrowingRequest extends Model
         'end_time' => 'datetime',
         'items' => 'array',
         'status' => 'string',
+        'remarks' => 'string',
     ];
 
     /**

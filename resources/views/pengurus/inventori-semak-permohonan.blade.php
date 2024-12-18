@@ -7,11 +7,59 @@
         <x-pengurus-sidebar />
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-7xl mx-auto">
-                <h1 class="text-2xl font-semibold text-gray-900">Semak Permohonan</h1>
+                <h1 class="text-2xl font-semibold text-gray-900 mb-6">Semak Permohonan</h1>
                 
-                
+                <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemohon</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarikh Mula</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarikh Tamat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @if($borrowingRequests->isEmpty())
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 text-center italic">Tiada permohonan</td>
+                                </tr>
+                            @endif
+                            @foreach($borrowingRequests as $request)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->user->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->start_time->format('d/m/Y H:i') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->end_time->format('d/m/Y H:i') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            @if($request->status === 'pending') bg-yellow-100 text-yellow-800
+                                            @elseif($request->status === 'approved') bg-green-100 text-green-800
+                                            @elseif($request->status === 'rejected') bg-red-100 text-red-800
+                                            @elseif($request->status === 'returned') bg-blue-100 text-blue-800
+                                            @else bg-red-100 text-red-800
+                                            @endif">
+                                            {{ ucfirst($request->status) }}
+                                        </span>
+                                        @if($request->status === 'approved' && $request->end_time < now() && $request->status !== 'returned')
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Late Return</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="{{ route('pengurus.inventori.permohonan.show', $request->id) }}" 
+                                            class="text-indigo-600 hover:text-indigo-900">
+                                            Semak
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -4,10 +4,14 @@
 <body>
     <div class="flex">
         <!-- Sidebar -->
-        <x-pemohon-sidebar />
+        @if(Auth::user()->role === 'pengurus')
+            <x-pengurus-sidebar />
+        @else
+            <x-pemohon-sidebar />
+        @endif
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-7xl mx-auto">
                 <h1 class="text-2xl font-semibold text-gray-900 pb-4">Maklumat Pengguna</h1>
                 

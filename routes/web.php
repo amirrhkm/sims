@@ -78,6 +78,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengguna/show/{id}',
             [AccountController::class, 'show'])
             ->name('pengurus.pengguna-show');
+
+        Route::get('/pengurus/inventori/permohonan',
+            [InventoryController::class, 'reviewRequest'])
+            ->name('pengurus.inventori.permohonan.index');
+
+        Route::get('/pengurus/inventori/permohonan/{id}',
+            [InventoryController::class, 'showRequest'])
+            ->name('pengurus.inventori.permohonan.show');
+
+        Route::put('/pengurus/inventori/permohonan/{id}',
+            [InventoryController::class, 'updateRequest'])
+            ->name('pengurus.inventori.permohonan.update');
+
+        Route::get('/pengurus/inventori/permohonan/returned/{id}',
+            [InventoryController::class, 'returnedRequest'])
+            ->name('pengurus.inventori.permohonan.returned');
     });
 
     // ---------------------------------- Route for "Pemohon" ----------------------------------
