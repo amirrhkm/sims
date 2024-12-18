@@ -7,7 +7,7 @@
         <x-pengurus-sidebar />
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-2xl mx-auto">
                 <!-- Header -->
                 <div class="mb-6">
