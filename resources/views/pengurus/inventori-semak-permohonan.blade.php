@@ -34,7 +34,19 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $request->start_time->format('d/m/Y') }} hingga {{ $request->end_time->format('d/m/Y') }}
                                         <span class="text-gray-600 text-xs">
-                                            ({{ $request->end_time->diff($request->start_time)->format('%d hari') }})
+                                            @php
+                                                $diff = $request->end_time->diff($request->start_time);
+                                                $months = $diff->m;
+                                                $days = $diff->d;
+                                                $weeks = floor($days / 7);
+                                                $remaining_days = $days % 7;
+                                                
+                                                $duration = [];
+                                                if ($months > 0) $duration[] = $months . ' bulan';
+                                                if ($weeks > 0) $duration[] = $weeks . ' minggu';
+                                                if ($remaining_days > 0) $duration[] = $remaining_days . ' hari';
+                                            @endphp
+                                            ({{ implode(', ', $duration) }})
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">

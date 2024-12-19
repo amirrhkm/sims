@@ -1,7 +1,8 @@
 <div class="fixed h-screen w-64 bg-gray-900 text-white flex flex-col transition-all duration-300">
     <!-- Logo and App Title -->
-    <div class="p-4 flex items-center space-x-3">
+    <div class="p-4 flex items-center space-x-3 justify-between">
         <h1 class="text-xl font-bold text-center">SIMS</h1>
+        <p class="text-xs text-gray-400">v0.0.4</p>
     </div>
 
     <!-- User Info -->
