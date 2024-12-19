@@ -62,7 +62,14 @@
                                             hingga<br>
                                             {{ $request->end_time->format('d/m/Y') }}<br>
                                             <span class="text-gray-600 text-xs">
-                                                ({{ $request->end_time->diff($request->start_time)->format('%d hari') }})
+                                                @php
+                                                    $diff = $request->end_time->diff($request->start_time);
+                                                    $months = $diff->m;
+                                                    $days = $diff->d;
+                                                    $weeks = floor($days / 7);
+                                                    $remaining_days = $days % 7;
+                                                @endphp
+                                                ({{ $months . ' bulan, ' . $weeks . ' minggu, ' . $remaining_days . ' hari' }})
                                             </span>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
