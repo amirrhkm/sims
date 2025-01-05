@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -14,25 +16,43 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'name' => 'required',
-            'password' => 'required'
-        ]);
+        try {
+            $user = User::where('name', $request->name)->first();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            
-            if (Auth::user()->role === 'pemohon') {
-                return redirect()->intended('/pemohon/dashboard');
-            } elseif (Auth::user()->role === 'pengurus') {
-                return redirect()->intended('/pengurus/dashboard');
+            // Check if user exists
+            if (!$user) {
+                return redirect()->back()
+                    ->with('username_error', true)
+                    ->withInput($request->except('password'));
             }
-        }
 
-        // If authentication fails
-        return back()->withErrors([
-            'name' => 'The provided credentials do not match our records.',
-        ])->onlyInput('name');
+            // Check if password is correct
+            if (!Hash::check($request->password, $user->password)) {
+                return redirect()->back()
+                    ->with('password_error', true)
+                    ->withInput($request->except('password'));
+            }
+
+            // Check if user is active (if you have an active status)
+            if (isset($user->active) && !$user->active) {
+                return redirect()->back()
+                    ->with('inactive_error', true)
+                    ->withInput($request->except('password'));
+            }
+
+            // Login successful
+            Auth::login($user);
+            if (Auth::user()->role === 'pemohon') {
+                return redirect()->route('pemohon.dashboard');
+            } elseif (Auth::user()->role === 'pengurus') {
+                return redirect()->route('pengurus.dashboard');
+            }
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['system_error' => 'An unexpected error occurred. Please try again.'])
+                ->withInput($request->except('password'));
+        }
     }
 
     public function logout(Request $request)
