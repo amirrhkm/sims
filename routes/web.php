@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
-
+use App\Http\Controllers\ReportController;
 // Public routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/', [AuthController::class, 'login'])->name('login');
@@ -94,6 +94,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengurus/inventori/permohonan/returned/{id}',
             [InventoryController::class, 'returnedRequest'])
             ->name('pengurus.inventori.permohonan.returned');
+
+        Route::get('/pengurus/laporan',
+            [ReportController::class, 'pengurusIndex'])
+            ->name('pengurus.laporan');
     });
 
     // ---------------------------------- Route for "Pemohon" ----------------------------------
@@ -128,5 +132,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengguna/show/{id}',
             [AccountController::class, 'show'])
             ->name('pemohon.pengguna-show');
+
+        Route::get('/pemohon/laporan',
+            [ReportController::class, 'pemohonIndex'])
+            ->name('pemohon.laporan');
     });
 });

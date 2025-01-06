@@ -74,6 +74,35 @@
                     </div>
                 </div>
 
+                <!-- Admin Details (New Section) -->
+                @if($borrowingRequest->status !== 'pending' && $borrowingRequest->processed_by)
+                    <div class="bg-white shadow rounded-lg p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Maklumat Pemproses</h2>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Nama Pemproses</p>
+                                <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->processedBy->name }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Email</p>
+                                <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->processedBy->email }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Jawatan</p>
+                                <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->processedBy->position }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Jabatan</p>
+                                <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->processedBy->department }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tarikh Diproses</p>
+                                <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->processed_at?->format('d/m/Y H:i') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Items List -->
                 <div class="bg-white shadow rounded-lg p-6 mb-6">
                     <h2 class="text-lg font-medium text-gray-900 mb-4">Senarai Barang</h2>
