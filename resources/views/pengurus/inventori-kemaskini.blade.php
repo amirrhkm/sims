@@ -77,7 +77,7 @@
                             @forelse($inventories as $inventory)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $inventory->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $inventory->quantity }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $inventory->quantity }} / {{ $inventory->total_quantity }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $inventory->category }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $inventory->isAvailable() ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
