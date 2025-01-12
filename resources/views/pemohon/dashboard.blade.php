@@ -26,28 +26,28 @@
         <i class="fas fa-box text-3xl text-blue-500"></i>
         <div>
           <h2 class="text-lg font-semibold">Jumlah Item</h2>
-          <p class="text-xl font-bold" id="totalItems">120</p>
+          <p class="text-xl font-bold" id="totalItems">{{ $totalItems }}</p>
         </div>
       </div>
       <div class="bg-green-100 hover:bg-green-200 p-4 rounded shadow flex items-center space-x-4">
         <i class="fas fa-check-circle text-3xl text-green-500"></i>
         <div>
           <h2 class="text-lg font-semibold">Item Dipinjam</h2>
-          <p class="text-xl font-bold" id="itemsBorrowed">35</p>
+          <p class="text-xl font-bold" id="itemsBorrowed">{{ $itemsBorrowed }}</p>
         </div>
       </div>
       <div class="bg-yellow-100 hover:bg-yellow-200 p-4 rounded shadow flex items-center space-x-4">
         <i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i>
         <div>
           <h2 class="text-lg font-semibold">Item Tertunggak</h2>
-          <p class="text-xl font-bold" id="overdueItems">5</p>
+          <p class="text-xl font-bold" id="overdueItems">{{ $overdueItems }}</p>
         </div>
       </div>
       <div class="bg-purple-100 hover:bg-purple-200 p-4 rounded shadow flex items-center space-x-4">
         <i class="fas fa-users text-3xl text-purple-500"></i>
         <div>
           <h2 class="text-lg font-semibold">Pengguna Aktif</h2>
-          <p class="text-xl font-bold" id="activeUsers">18</p>
+          <p class="text-xl font-bold" id="activeUsers">{{ $activeUsers }}</p>
         </div>
       </div>
     </div>
@@ -79,22 +79,6 @@
       </div>
     </div>
 
-    <!-- Quick Actions and Notifications -->
-    <div class="grid grid-cols-2 gap-6 mt-6">
-      <div class="bg-white p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Tindakan Cepat</h2>
-        <button id="addItemBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Item Baru</button>
-      </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Pemberitahuan</h2>
-        <ul id="notificationList" class="space-y-2">
-          <li class="bg-gray-100 p-2 rounded">Pemberitahuan Sistem: Inventori rendah untuk "Projector"</li>
-          <li class="bg-gray-100 p-2 rounded">Peringatan: Jana laporan bulanan</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal -->
   <div id="addItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white p-6 rounded shadow-lg w-1/3">
@@ -120,7 +104,11 @@
       data: {
         labels: ['Tersedia', 'Dipinjam', 'Tertunggak'],
         datasets: [{
-          data: [80, 35, 5], // Replace with dynamic data
+          data: [
+            {{ $availableItems }},
+            {{ $itemsBorrowed }},
+            {{ $overdueItems }}
+          ],
           backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
         }]
       },
