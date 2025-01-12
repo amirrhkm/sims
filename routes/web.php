@@ -5,6 +5,8 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DashboardController;
+
 // Public routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/', [AuthController::class, 'login'])->name('login');
@@ -15,9 +17,9 @@ Route::middleware(['auth'])->group(function () {
 
     // ---------------------------------- Route for "Pengurus" ----------------------------------
     Route::middleware(['handle:pengurus'])->prefix('pengurus')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pengurus.dashboard');
-        })->name('pengurus.dashboard');
+        Route::get('/dashboard',
+            [DashboardController::class, 'pengurusIndex'])
+            ->name('pengurus.dashboard');
     
         Route::get('/inventori', function () {
             return view('pengurus.inventori-main');
@@ -102,9 +104,9 @@ Route::middleware(['auth'])->group(function () {
 
     // ---------------------------------- Route for "Pemohon" ----------------------------------
     Route::middleware(['handle:pemohon'])->prefix('pemohon')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pemohon.dashboard');
-        })->name('pemohon.dashboard');
+        Route::get('/dashboard',
+            [DashboardController::class, 'pemohonIndex'])
+            ->name('pemohon.dashboard');
     
         Route::get('/inventori', function () {
             return view('pemohon.inventori-main');
@@ -126,7 +128,8 @@ Route::middleware(['auth'])->group(function () {
             [InventoryController::class, 'hapusPermohonan'])
             ->name('pemohon.inventori-hapus-permohonan');
     
-        Route::get('/inventori/lihat-inventori', [InventoryController::class, 'index'])
+        Route::get('/inventori/lihat-inventori',
+            [InventoryController::class, 'index'])
             ->name('pemohon.inventori.lihat');
 
         Route::get('/pengguna/show/{id}',
