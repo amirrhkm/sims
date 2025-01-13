@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\BorrowingRequest;
 use App\Models\User;
+use App\Models\Activity;
 
 class DashboardController extends Controller
 {
@@ -16,13 +17,15 @@ class DashboardController extends Controller
         $overdueItems = $this->getOverdueItems();
         $activeUsers = $this->getActiveUsers();
         $availableItems = $this->getAvailableItems();
-        
+        $activities = $this->getActivities();
+
         return view('pengurus.dashboard', compact(
             'totalItems',
             'itemsBorrowed',
             'overdueItems',
             'activeUsers',
-            'availableItems'
+            'availableItems',
+            'activities'
         ));
     }
 
@@ -33,14 +36,30 @@ class DashboardController extends Controller
         $overdueItems = $this->getOverdueItems();
         $activeUsers = $this->getActiveUsers();
         $availableItems = $this->getAvailableItems();
+        $activities = $this->getActivities();
         
         return view('pemohon.dashboard', compact(
             'totalItems',
             'itemsBorrowed',
             'overdueItems',
             'activeUsers',
-            'availableItems'
+            'availableItems',
+            'activities'
         ));
+    }
+
+    private function getActivities()
+    {
+        $activities = Activity::whereHasMorph(
+            'subject',
+            [BorrowingRequest::class]
+        )
+        ->with(['causer', 'subject'])
+        ->latest()
+        ->take(10)
+        ->get();
+
+        return $activities;
     }
 
     private function getTotalItems()
