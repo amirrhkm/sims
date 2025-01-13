@@ -15,9 +15,6 @@
     <!-- Header -->
     <header class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Smart Inventory Management System</h1>
-      <div class="flex items-center space-x-4">
-        <input type="text" placeholder="Search..." class="border rounded px-4 py-2">
-      </div>
     </header>
 
     <!-- Metrics Summary -->
@@ -69,32 +66,35 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="border px-4 py-2">Dec 30, 2024</td>
-              <td class="border px-4 py-2">John Doe</td>
-              <td class="border px-4 py-2">Borrowed "Laptop HP-15"</td>
-            </tr>
+            @if($activities->isEmpty())
+              <tr>
+                <td class="border px-4 py-2 text-center text-gray-500">-</td>
+                <td class="border px-4 py-2 text-center text-gray-500">-</td>
+                <td class="border px-4 py-2 text-center text-gray-500">Tiada aktiviti untuk dipaparkan</td>
+              </tr>
+            @else
+              @foreach($activities as $activity)
+                <tr>
+                  <td class="border px-4 py-2">{{ $activity->created_at->format('d M, Y') }}</td>
+                  <td class="border px-4 py-2">{{ $activity->causer->name ?? 'System' }}</td>
+                  <td class="border px-4 py-2">
+                    @if($activity->type === 'borrowing_request_created')
+                      Memohon pinjaman baharu 
+                    @elseif($activity->type === 'borrowing_request_approved')
+                      Permohonan diluluskan
+                    @elseif($activity->type === 'borrowing_request_rejected')
+                      Permohonan ditolak
+                    @else
+                      {{ $activity->description }}
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            @endif
           </tbody>
         </table>
       </div>
     </div>
-
-  <!-- Modal -->
-  <div id="addItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded shadow-lg w-1/3">
-      <h2 class="text-lg font-semibold mb-4">Tambah Item Baru</h2>
-      <form id="addItemForm">
-        <div class="mb-4">
-          <label class="block mb-2 text-sm font-medium">Nama Item</label>
-          <input type="text" class="border px-4 py-2 w-full rounded" required>
-        </div>
-        <div class="flex justify-end space-x-2">
-          <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded">Batal</button>
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <script>
     // Chart Initialization

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class BorrowingRequest extends Model
 {
@@ -84,5 +85,57 @@ class BorrowingRequest extends Model
     public function isValidDateRange(): bool
     {
         return $this->start_time < $this->end_time;
+    }
+
+    /**
+     * Get all activities for the borrowing request.
+     */
+    public function activities(): MorphMany
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
+
+    /**
+     * Log an activity for this borrowing request.
+     */
+    public function logActivity(string $type, string $description, array $properties = []): void
+    {
+        $this->activities()->create([
+            'type' => $type,
+            'description' => $description,
+            'causer_id' => auth()->id(),
+            'properties' => $properties
+        ]);
+    }
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Log when a new borrowing request is created
+        static::created(function ($borrowingRequest) {
+            $borrowingRequest->logActivity(
+                'borrowing_request_created',
+                'New borrowing request submitted',
+                ['items' => $borrowingRequest->items]
+            );
+        });
+
+        // Log when the status is updated (e.g., approved)
+        static::updated(function ($borrowingRequest) {
+            if ($borrowingRequest->isDirty('status')) {
+                $borrowingRequest->logActivity(
+                    'borrowing_request_' . strtolower($borrowingRequest->status),
+                    "Borrowing request {$borrowingRequest->status}",
+                    [
+                        'old_status' => $borrowingRequest->getOriginal('status'),
+                        'new_status' => $borrowingRequest->status,
+                    ]
+                );
+            }
+        });
     }
 }
