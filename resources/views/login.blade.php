@@ -23,8 +23,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div>
-                        <p class="font-bold">Username Not Found</p>
-                        <p class="text-sm">The username you entered doesn't exist in our system. Please check and try again.</p>
+                        <p class="font-bold">Nama Pengguna Tidak Dijumpai</p>
+                        <p class="text-sm">Nama pengguna yang anda masukkan tiada dalam sistem kami. Sila cuba lagi.</p>
                     </div>
                 </div>
             </div>
@@ -37,8 +37,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div>
-                        <p class="font-bold">Incorrect Password</p>
-                        <p class="text-sm">The password you entered is incorrect. Please try again.</p>
+                        <p class="font-bold">Kata Laluan Tidak Sah</p>
+                        <p class="text-sm">Kata laluan yang anda masukkan tidak sah. Sila cuba lagi.</p>
                     </div>
                 </div>
             </div>
@@ -51,8 +51,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div>
-                        <p class="font-bold">Account Inactive</p>
-                        <p class="text-sm">Your account is currently inactive. Please contact the administrator.</p>
+                        <p class="font-bold">Akun Tidak Aktif</p>
+                        <p class="text-sm">Akun anda saat ini tidak aktif. Sila hubungi administrator.</p>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <!-- Header -->
             <div class="p-6 bg-white">
                 <div class="text-center">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Selamat Kembali</h1>
                     <p class="text-gray-600">Smart Inventory Management System</p>
                 </div>
             </div>
@@ -101,13 +101,13 @@
                             name="name" 
                             required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
-                            placeholder="Enter your username"
+                            placeholder="Masukkan username"
                         >
                     </div>
 
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
-                            Password
+                            Kata Laluan
                         </label>
                         <input 
                             type="password" 
@@ -115,7 +115,7 @@
                             name="password" 
                             required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
-                            placeholder="Enter your password"
+                            placeholder="Masukkan kata laluan"
                         >
                     </div>
 
