@@ -107,20 +107,35 @@
 
     // Updated PDF Export
     document.getElementById('exportPDF').addEventListener('click', function() {
-        // Initialize jsPDF
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Set document properties
-        doc.setFont('helvetica');
-        doc.setFontSize(12);
+        // Set document properties and styling
+        doc.setProperties({
+            title: 'Smart Inventory Management System - Report',
+            author: 'SIMS',
+            subject: 'Inventory Report',
+            keywords: 'inventory, report, management'
+        });
 
-        // Add title
-        doc.setFontSize(16);
+        // Add header with gradient-like styling
+        doc.setFillColor(30, 64, 175); // Blue-600
+        doc.rect(0, 0, 220, 40, 'F');
+        
+        // Add header text
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
         doc.text('Smart Inventory Management System', 105, 20, { align: 'center' });
         doc.setFontSize(14);
-        doc.text('Detailed Report', 105, 30, { align: 'center' });
-        
+        doc.text('Laporan Inventori', 105, 30, { align: 'center' });
+
+        // Add date and time
+        doc.setTextColor(100, 100, 100);
+        doc.setFontSize(10);
+        doc.text(`Tarikh: ${new Date().toLocaleDateString('ms-MY')}`, 20, 50);
+        doc.text(`Masa: ${new Date().toLocaleTimeString('ms-MY')}`, 20, 57);
+
         // Get table data
         const table = document.getElementById('reportTable');
         const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
@@ -128,38 +143,83 @@
             Array.from(row.querySelectorAll('td')).map(td => td.textContent)
         );
 
-        // Set initial position
-        let yPos = 40;
-        const xStart = 10;
-        const cellWidth = 35;
+        // Table styling
+        const startY = 70;
+        const cellPadding = 5;
         const lineHeight = 10;
+        const colWidth = 38;
 
-        // Draw headers
-        doc.setFontSize(12);
+        // Draw table headers with background
+        doc.setFillColor(241, 245, 249); // Gray-100
+        doc.rect(10, startY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
+        
         doc.setFont('helvetica', 'bold');
+        doc.setTextColor(71, 85, 105); // Gray-600
+        doc.setFontSize(11);
+        
         headers.forEach((header, i) => {
-            doc.text(header, xStart + (i * cellWidth), yPos);
+            doc.text(header, 15 + (i * colWidth), startY + 2);
         });
 
-        // Draw content
+        // Draw table content
+        let currentY = startY + lineHeight;
         doc.setFont('helvetica', 'normal');
-        yPos += lineHeight;
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
 
-        rows.forEach(row => {
-            // Check if we need a new page
-            if (yPos > 280) {
+        rows.forEach((row, rowIndex) => {
+            // Add new page if needed
+            if (currentY > 270) {
                 doc.addPage();
-                yPos = 20;
+                currentY = 20;
+                
+                // Add header to new page
+                doc.setFillColor(241, 245, 249);
+                doc.rect(10, currentY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
+                
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(71, 85, 105);
+                doc.setFontSize(11);
+                
+                headers.forEach((header, i) => {
+                    doc.text(header, 15 + (i * colWidth), currentY + 2);
+                });
+                
+                currentY += lineHeight;
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(10);
+            }
+
+            // Alternate row background
+            if (rowIndex % 2 === 1) {
+                doc.setFillColor(249, 250, 251); // Gray-50
+                doc.rect(10, currentY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
             }
 
             row.forEach((cell, i) => {
-                doc.text(String(cell), xStart + (i * cellWidth), yPos);
+                doc.text(String(cell), 15 + (i * colWidth), currentY + 2);
             });
-            yPos += lineHeight;
+            currentY += lineHeight;
         });
 
+        // Add footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFont('helvetica', 'italic');
+            doc.setFontSize(8);
+            doc.setTextColor(156, 163, 175); // Gray-400
+            doc.text(
+                `Muka Surat ${i} daripada ${pageCount}`, 
+                doc.internal.pageSize.width / 2, 
+                doc.internal.pageSize.height - 10, 
+                { align: 'center' }
+            );
+        }
+
         // Save the PDF
-        doc.save('inventory_report.pdf');
+        doc.save('laporan_inventori.pdf');
     });
 
     // Excel Export

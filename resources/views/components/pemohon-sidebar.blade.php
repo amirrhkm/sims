@@ -2,7 +2,7 @@
     <!-- Logo and App Title -->
     <div class="p-4 flex items-center space-x-3 justify-between">
         <h1 class="text-xl font-bold text-center">SIMS</h1>
-        <p class="text-xs text-gray-400">v0.0.7</p>
+        <p class="text-xs text-gray-400">v0.0.8</p>
     </div>
 
     <!-- User Info -->
