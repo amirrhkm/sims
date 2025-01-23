@@ -136,7 +136,7 @@ Route::middleware(['auth'])->group(function () {
             [AccountController::class, 'show'])
             ->name('pemohon.pengguna-show');
 
-        Route::get('/pemohon/laporan',
+        Route::get('/pemohon/laporan/{id}',
             [ReportController::class, 'pemohonIndex'])
             ->name('pemohon.laporan');
     });
