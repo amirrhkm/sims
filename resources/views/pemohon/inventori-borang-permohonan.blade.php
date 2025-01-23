@@ -1,38 +1,72 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
     <div class="flex">
         <!-- Sidebar -->
         <x-pemohon-sidebar />
 
         <!-- Main Content -->
         <div class="flex-1 p-8 ml-64 w-full">
-            <div class="max-w-7xl mx-auto">
-                <h1 class="text-2xl font-semibold text-gray-900 mb-6">Borang Permohonan</h1>
+            <div class="max-w-4xl mx-auto">
+                <!-- Header -->
+                <div class="gradient-header rounded-lg shadow-lg p-6 mb-8 text-white">
+                    <h1 class="text-3xl font-bold">Borang Permohonan</h1>
+                    <p class="text-gray-100 mt-2">Sila isi maklumat permohonan dengan lengkap</p>
+                </div>
                 
-                <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('pemohon.inventori-borang-permohonan') }}">
+                <form class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4" method="POST" action="{{ route('pemohon.inventori-borang-permohonan') }}">
                     @csrf
                     
                     @if ($errors->any())
-                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-red-800">Terdapat beberapa kesalahan:</h3>
+                                    <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     @endif
 
                     <!-- Borrowing Duration -->
-                    <div class="mb-6 grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Tarikh & Masa Mula</label>
-                            <input name="start_time" type="datetime-local" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Tarikh & Masa Tamat</label>
-                            <input name="end_time" type="datetime-local" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <div class="mb-8">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Tempoh Peminjaman</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Tarikh & Masa Mula</label>
+                                <input name="start_time" type="datetime-local" 
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Tarikh & Masa Tamat</label>
+                                <input name="end_time" type="datetime-local" 
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out" required>
+                            </div>
                         </div>
                     </div>
 
@@ -40,7 +74,7 @@
                     <div id="itemSelections">
                         <div class="mb-4 grid grid-cols-12 gap-4 items-end">
                             <div class="col-span-11">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Item</label>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Senarai Item</label>
                                 <select name="items[0][id]" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                     <option value="">Pilih Item</option>
                                     @foreach($inventories->groupBy('category') as $category => $items)

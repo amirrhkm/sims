@@ -17,7 +17,7 @@
             <!-- Header with Gradient -->
             <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-6">
                 <h1 class="text-2xl font-bold text-white">Smart Inventory Management System</h1>
-                <p class="text-blue-100 mt-2">Papan Pemuka Sistem Pengurusan Inventori</p>
+                <p class="text-blue-100 mt-2">Dashboard Sistem Pengurusan Inventori</p>
             </div>
 
             <!-- Metrics Summary -->

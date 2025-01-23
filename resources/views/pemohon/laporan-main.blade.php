@@ -51,25 +51,70 @@
           <tr>
             <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">ID</th>
             <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Nama Item</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Peminjam</th>
             <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Tarikh Pinjam</th>
             <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Tarikh Pulang</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="border border-gray-300 px-4 py-2">1</td>
-            <td class="border border-gray-300 px-4 py-2">Laptop</td>
-            <td class="border border-gray-300 px-4 py-2">John Doe</td>
-            <td class="border border-gray-300 px-4 py-2">2024-12-01</td>
-            <td class="border border-gray-300 px-4 py-2">2024-12-10</td>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center" style="width: 8%;">1</td>
+            <td class="border border-gray-300 px-4 py-3" style="width: 52%;">Laptop Dell XPS 13</td>
+            <td class="border border-gray-300 px-4 py-3 text-center" style="width: 20%;">2024-01-15</td>
+            <td class="border border-gray-300 px-4 py-3 text-center" style="width: 20%;">2024-01-22</td>
           </tr>
-          <tr>
-            <td class="border border-gray-300 px-4 py-2">2</td>
-            <td class="border border-gray-300 px-4 py-2">Projector</td>
-            <td class="border border-gray-300 px-4 py-2">Jane Smith</td>
-            <td class="border border-gray-300 px-4 py-2">2024-12-02</td>
-            <td class="border border-gray-300 px-4 py-2">2024-12-12</td>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">2</td>
+            <td class="border border-gray-300 px-4 py-3">Projektor Epson EB-X51</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-01</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-03</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">3</td>
+            <td class="border border-gray-300 px-4 py-3">Kamera DSLR Canon EOS 850D</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-10</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-17</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">4</td>
+            <td class="border border-gray-300 px-4 py-3">Mikrofon Wireless Shure</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-15</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-02-16</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">5</td>
+            <td class="border border-gray-300 px-4 py-3">Tablet iPad Pro 12.9"</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-01</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-15</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">6</td>
+            <td class="border border-gray-300 px-4 py-3">Skrin Projektor Mudah Alih</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-05</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-07</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">7</td>
+            <td class="border border-gray-300 px-4 py-3">Pembesar Suara Bluetooth JBL</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-10</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-11</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">8</td>
+            <td class="border border-gray-300 px-4 py-3">Komputer Riba HP Pavilion</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-15</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-03-29</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">9</td>
+            <td class="border border-gray-300 px-4 py-3">Tripod Kamera Profesional</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-04-01</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-04-03</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-3 text-center">10</td>
+            <td class="border border-gray-300 px-4 py-3">Gimbal DJI OM 5</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-04-05</td>
+            <td class="border border-gray-300 px-4 py-3 text-center">2024-04-12</td>
           </tr>
         </tbody>
       </table>
@@ -119,7 +164,7 @@
         });
 
         // Add header with gradient-like styling
-        doc.setFillColor(30, 64, 175); // Blue-600
+        doc.setFillColor(30, 64, 175);
         doc.rect(0, 0, 220, 40, 'F');
         
         // Add header text
@@ -130,11 +175,11 @@
         doc.setFontSize(14);
         doc.text('Laporan Inventori', 105, 30, { align: 'center' });
 
-        // Add date and time
+        // Add date and time with more left margin
         doc.setTextColor(100, 100, 100);
         doc.setFontSize(10);
-        doc.text(`Tarikh: ${new Date().toLocaleDateString('ms-MY')}`, 20, 50);
-        doc.text(`Masa: ${new Date().toLocaleTimeString('ms-MY')}`, 20, 57);
+        doc.text(`Tarikh: ${new Date().toLocaleDateString('ms-MY')}`, 25, 50);
+        doc.text(`Masa: ${new Date().toLocaleTimeString('ms-MY')}`, 25, 57);
 
         // Get table data
         const table = document.getElementById('reportTable');
@@ -143,26 +188,42 @@
             Array.from(row.querySelectorAll('td')).map(td => td.textContent)
         );
 
-        // Table styling
+        // Improved table styling with better spacing
         const startY = 70;
-        const cellPadding = 5;
-        const lineHeight = 10;
-        const colWidth = 38;
+        const margin = 25; // Increased left and right margins
+        const pageWidth = doc.internal.pageSize.width;
+        const tableWidth = pageWidth - (2 * margin);
+        
+        // Calculate column widths (in proportion to the table display)
+        const colWidths = [
+            tableWidth * 0.08,  // ID column (8%)
+            tableWidth * 0.52,  // Name column (52%)
+            tableWidth * 0.20,  // Start date (20%)
+            tableWidth * 0.20   // End date (20%)
+        ];
 
         // Draw table headers with background
-        doc.setFillColor(241, 245, 249); // Gray-100
-        doc.rect(10, startY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
+        doc.setFillColor(241, 245, 249);
+        doc.rect(margin, startY - 5, tableWidth, 12, 'F');
         
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(71, 85, 105); // Gray-600
+        doc.setTextColor(71, 85, 105);
         doc.setFontSize(11);
         
+        let currentX = margin;
         headers.forEach((header, i) => {
-            doc.text(header, 15 + (i * colWidth), startY + 2);
+            const xPos = currentX + (i === 0 ? colWidths[i]/2 : // Center ID
+                         i === 1 ? 5 : // Left align name
+                         colWidths[i]/2); // Center dates
+            const align = i === 0 ? 'center' :
+                         i === 1 ? 'left' :
+                         'center';
+            doc.text(header, xPos, startY + 2, { align: align });
+            currentX += colWidths[i];
         });
 
         // Draw table content
-        let currentY = startY + lineHeight;
+        let currentY = startY + 12;
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(10);
@@ -175,17 +236,25 @@
                 
                 // Add header to new page
                 doc.setFillColor(241, 245, 249);
-                doc.rect(10, currentY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
+                doc.rect(margin, currentY - 5, tableWidth, 12, 'F');
                 
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(71, 85, 105);
                 doc.setFontSize(11);
                 
+                currentX = margin;
                 headers.forEach((header, i) => {
-                    doc.text(header, 15 + (i * colWidth), currentY + 2);
+                    const xPos = currentX + (i === 0 ? colWidths[i]/2 :
+                                i === 1 ? 5 :
+                                colWidths[i]/2);
+                    const align = i === 0 ? 'center' :
+                                i === 1 ? 'left' :
+                                'center';
+                    doc.text(header, xPos, currentY + 2, { align: align });
+                    currentX += colWidths[i];
                 });
                 
-                currentY += lineHeight;
+                currentY += 12;
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(0, 0, 0);
                 doc.setFontSize(10);
@@ -193,27 +262,36 @@
 
             // Alternate row background
             if (rowIndex % 2 === 1) {
-                doc.setFillColor(249, 250, 251); // Gray-50
-                doc.rect(10, currentY - 5, doc.internal.pageSize.width - 20, lineHeight + 5, 'F');
+                doc.setFillColor(249, 250, 251);
+                doc.rect(margin, currentY - 5, tableWidth, 12, 'F');
             }
 
+            // Draw row content with proper alignment
+            currentX = margin;
             row.forEach((cell, i) => {
-                doc.text(String(cell), 15 + (i * colWidth), currentY + 2);
+                const xPos = currentX + (i === 0 ? colWidths[i]/2 :
+                            i === 1 ? 5 :
+                            colWidths[i]/2);
+                const align = i === 0 ? 'center' :
+                            i === 1 ? 'left' :
+                            'center';
+                doc.text(String(cell), xPos, currentY + 2, { align: align });
+                currentX += colWidths[i];
             });
-            currentY += lineHeight;
+            currentY += 12;
         });
 
-        // Add footer
+        // Add footer with better positioning
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
             doc.setPage(i);
             doc.setFont('helvetica', 'italic');
             doc.setFontSize(8);
-            doc.setTextColor(156, 163, 175); // Gray-400
+            doc.setTextColor(156, 163, 175);
             doc.text(
                 `Muka Surat ${i} daripada ${pageCount}`, 
-                doc.internal.pageSize.width / 2, 
-                doc.internal.pageSize.height - 10, 
+                pageWidth / 2, 
+                doc.internal.pageSize.height - 15, 
                 { align: 'center' }
             );
         }

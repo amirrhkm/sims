@@ -1,7 +1,19 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        .status-badge {
+            @apply px-3 py-1 text-xs font-semibold rounded-full;
+            transition: all 0.2s ease-in-out;
+        }
+        .status-badge:hover {
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
     <div class="flex">
         <!-- Sidebar -->
         <x-pemohon-sidebar />
@@ -9,8 +21,13 @@
         <!-- Main Content -->
         <div class="flex-1 p-8 ml-64 w-full">
             <div class="max-w-7xl mx-auto">
-                <h1 class="text-2xl font-semibold text-gray-900 mb-6">Senarai Permohonan</h1>
+                <!-- Header -->
+                <div class="gradient-header rounded-lg shadow-lg p-6 mb-8 text-white">
+                    <h1 class="text-3xl font-bold">Senarai Permohonan</h1>
+                    <p class="text-gray-100 mt-2">Senarai permohonan peminjaman inventori anda</p>
+                </div>
 
+                <!-- Notifications -->
                 @if(session('success'))
                     <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
                         {{ session('success') }}
@@ -92,8 +109,8 @@
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             @if($request->status === 'pending')
                                                 <form action="{{ route('pemohon.inventori-hapus-permohonan', $request->id) }}" 
-                                                    method="POST" 
-                                                    onsubmit="return confirm('Adakah anda pasti untuk memadamkan permohonan ini?');">
+                                                      method="POST" 
+                                                      onsubmit="return confirm('Adakah anda pasti untuk memadamkan permohonan ini?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" 
