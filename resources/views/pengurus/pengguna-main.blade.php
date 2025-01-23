@@ -1,5 +1,6 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="flex">
@@ -21,8 +22,17 @@
                 <!-- Pengurus Table -->
                 <div class="mb-8">
                     <h3 class="text-xl font-semibold text-gray-700 mb-4">Senarai Pengurus</h3>
+                    
+                    <!-- Single Search Filter for Pengurus -->
+                    <div class="mb-4">
+                        <input type="text" 
+                               id="pengurusSearch" 
+                               placeholder="Cari pengurus..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table id="pengurusTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Nama</th>
@@ -72,8 +82,17 @@
                 <!-- Pemohon Table -->
                 <div>
                     <h3 class="text-xl font-semibold text-gray-700 mb-4">Senarai Pemohon</h3>
+                    
+                    <!-- Single Search Filter for Pemohon -->
+                    <div class="mb-4">
+                        <input type="text" 
+                               id="pemohonSearch" 
+                               placeholder="Cari pemohon..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <table id="pemohonTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Nama</th>
@@ -123,6 +142,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Simplified search script -->
+                <script>
+                    $(document).ready(function() {
+                        // Pengurus Search
+                        $("#pengurusSearch").on("keyup", function() {
+                            const searchText = $(this).val().toLowerCase();
+                            $("#pengurusTable tbody tr").filter(function() {
+                                const rowText = $(this).text().toLowerCase();
+                                $(this).toggle(rowText.includes(searchText));
+                            });
+                        });
+
+                        // Pemohon Search
+                        $("#pemohonSearch").on("keyup", function() {
+                            const searchText = $(this).val().toLowerCase();
+                            $("#pemohonTable tbody tr").filter(function() {
+                                const rowText = $(this).text().toLowerCase();
+                                $(this).toggle(rowText.includes(searchText));
+                            });
+                        });
+                    });
+                </script>
             </div>
         </div>
     </div>

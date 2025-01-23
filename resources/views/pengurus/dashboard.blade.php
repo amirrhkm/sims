@@ -7,118 +7,169 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-  <x-pengurus-sidebar />
+<body class="bg-gray-50">
+    <div class="flex">
+        <x-pengurus-sidebar />
 
-  <div class="container mx-auto p-6 flex-1 p-8 ml-64 w-full">
-    <!-- Header -->
-    <header class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Smart Inventory Management System</h1>
-    </header>
+        <div class="flex-1 p-8 ml-64">
+            <!-- Header with Gradient -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 mb-6">
+                <h1 class="text-2xl font-bold text-white">Smart Inventory Management System</h1>
+                <p class="text-blue-100 mt-2">Dashboard Sistem Pengurusan Inventori</p>
+            </div>
 
-    <!-- Metrics Summary -->
-    <div class="grid grid-cols-4 gap-4 mb-6">
-      <div class="bg-blue-100 hover:bg-blue-200 p-4 rounded shadow flex items-center space-x-4">
-        <i class="fas fa-box text-3xl text-blue-500"></i>
-        <div>
-          <h2 class="text-lg font-semibold">Jumlah Item</h2>
-          <p class="text-xl font-bold" id="totalItems">{{ $totalItems }}</p>
+            <!-- Metrics Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <!-- Total Items Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Jumlah Item</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $totalItems }}</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-box text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Borrowed Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Item Dipinjam</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $itemsBorrowed }}</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-hand-holding text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overdue Items Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Item Tertunggak</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $overdueItems }}</p>
+                        </div>
+                        <div class="bg-red-100 p-3 rounded-full">
+                            <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Users Card -->
+                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Pengguna Aktif</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $activeUsers }}</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-users text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Activity Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Borrowing Status Chart -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Status Pinjaman</h2>
+                    <div class="relative" style="height: 300px;">
+                        <canvas id="borrowingChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Aktiviti Terbaru</h2>
+                    <div class="overflow-x-auto">
+                        <table id="activityLog" class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Tarikh</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Pengguna</th>
+                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($activities->isEmpty())
+                                    <tr>
+                                        <td class="px-4 py-2 text-sm text-gray-500">-</td>
+                                        <td class="px-4 py-2 text-sm text-gray-500">-</td>
+                                        <td class="px-4 py-2 text-sm text-gray-500">Tiada aktiviti untuk dipaparkan</td>
+                                    </tr>
+                                @else
+                                    @foreach($activities as $activity)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-4 py-2 text-sm">{{ $activity->created_at->format('d M, Y') }}</td>
+                                            <td class="px-4 py-2 text-sm">{{ $activity->causer->name ?? 'System' }}</td>
+                                            <td class="px-4 py-2 text-sm">
+                                                @if($activity->type === 'borrowing_request_created')
+                                                    <span class="text-blue-600">
+                                                        <i class="fas fa-plus-circle mr-1"></i>
+                                                        Memohon pinjaman baharu
+                                                    </span>
+                                                @elseif($activity->type === 'borrowing_request_approved')
+                                                    <span class="text-green-600">
+                                                        <i class="fas fa-check-circle mr-1"></i>
+                                                        Permohonan diluluskan
+                                                    </span>
+                                                @elseif($activity->type === 'borrowing_request_rejected')
+                                                    <span class="text-red-600">
+                                                        <i class="fas fa-times-circle mr-1"></i>
+                                                        Permohonan ditolak
+                                                    </span>
+                                                @else
+                                                    {{ $activity->description }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="bg-green-100 hover:bg-green-200 p-4 rounded shadow flex items-center space-x-4">
-        <i class="fas fa-check-circle text-3xl text-green-500"></i>
-        <div>
-          <h2 class="text-lg font-semibold">Item Dipinjam</h2>
-          <p class="text-xl font-bold" id="itemsBorrowed">{{ $itemsBorrowed }}</p>
-        </div>
-      </div>
-      <div class="bg-yellow-100 hover:bg-yellow-200 p-4 rounded shadow flex items-center space-x-4">
-        <i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i>
-        <div>
-          <h2 class="text-lg font-semibold">Item Tertunggak</h2>
-          <p class="text-xl font-bold" id="overdueItems">{{ $overdueItems }}</p>
-        </div>
-      </div>
-      <div class="bg-purple-100 hover:bg-purple-200 p-4 rounded shadow flex items-center space-x-4">
-        <i class="fas fa-users text-3xl text-purple-500"></i>
-        <div>
-          <h2 class="text-lg font-semibold">Pengguna Aktif</h2>
-          <p class="text-xl font-bold" id="activeUsers">{{ $activeUsers }}</p>
-        </div>
-      </div>
     </div>
 
-    <!-- Borrowing Status and Activity Log -->
-    <div class="grid grid-cols-2 gap-6">
-      <div class="bg-white p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Status Pinjam</h2>
-        <canvas id="borrowingChart" class="w-full h-48"></canvas>
-      </div>
-      <div class="bg-white p-4 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Aktiviti Terbaru</h2>
-        <table id="activityLog" class="table-auto w-full border-collapse border border-gray-200">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border px-4 py-2">Tarikh</th>
-              <th class="border px-4 py-2">Pengguna</th>
-              <th class="border px-4 py-2">Tindakan</th>
-            </tr>
-          </thead>
-          <tbody>
-            @if($activities->isEmpty())
-              <tr>
-                <td class="border px-4 py-2 text-center text-gray-500">-</td>
-                <td class="border px-4 py-2 text-center text-gray-500">-</td>
-                <td class="border px-4 py-2 text-center text-gray-500">Tiada aktiviti untuk dipaparkan</td>
-              </tr>
-            @else
-              @foreach($activities as $activity)
-                <tr>
-                  <td class="border px-4 py-2">{{ $activity->created_at->format('d M, Y') }}</td>
-                  <td class="border px-4 py-2">{{ $activity->causer->name ?? 'System' }}</td>
-                  <td class="border px-4 py-2">
-                    @if($activity->type === 'borrowing_request_created')
-                      Memohon pinjaman baharu 
-                    @elseif($activity->type === 'borrowing_request_approved')
-                      Permohonan diluluskan
-                    @elseif($activity->type === 'borrowing_request_rejected')
-                      Permohonan ditolak
-                    @else
-                      {{ $activity->description }}
-                    @endif
-                  </td>
-                </tr>
-              @endforeach
-            @endif
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  <script>
-    // Chart Initialization
-    const ctx = document.getElementById('borrowingChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Tersedia', 'Dipinjam', 'Tertunggak'],
-        datasets: [{
-          data: [
-            {{ $availableItems }}, 
-            {{ $itemsBorrowed }}, 
-            {{ $overdueItems }}
-          ],
-          backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' }
-        }
-      }
-    });
+    <script>
+        // Chart Initialization with improved styling
+        const ctx = document.getElementById('borrowingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tersedia', 'Dipinjam', 'Tertunggak'],
+                datasets: [{
+                    data: [{{ $availableItems }}, {{ $itemsBorrowed }}, {{ $overdueItems }}],
+                    backgroundColor: ['#10B981', '#3B82F6', '#EF4444'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
 
     // DataTable Initialization
     $(document).ready(function () {

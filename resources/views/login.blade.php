@@ -131,7 +131,7 @@
             <!-- Footer -->
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
                 <p class="text-center text-sm text-gray-600">
-                    Protected by Smart Inventory System
+                    Protected by SIMS
                 </p>
             </div>
         </div>
