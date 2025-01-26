@@ -103,7 +103,12 @@
                                                 @elseif($request->status === 'returned') bg-blue-100 text-blue-800
                                                 @else bg-yellow-100 text-yellow-800
                                                 @endif">
-                                                {{ $request->status ?? 'pending' }}
+                                                @if($request->status === 'pending') Dalam Proses
+                                                @elseif($request->status === 'approved') Diluluskan
+                                                @elseif($request->status === 'rejected') Ditolak
+                                                @elseif($request->status === 'returned') Dipulangkan
+                                                @else {{ $request->status }}
+                                                @endif
                                             </span>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -125,19 +130,20 @@
                                     @if ($request->status === 'rejected')
                                         <tr>
                                             <td colspan="6" class="px-5 py-1 border-b border-gray-200 bg-red-50">
-                                                <div class="flex items-center justify-center">
+                                                <div class="flex items-center">
                                                     <svg class="w-4 h-4 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                                     </svg>
-                                                    @if($request->remarks)
-                                                        <span class="text-red-600 font-medium text-sm">
-                                                            ID: {{ $request->id }} - {{ $request->remarks }}
-                                                        </span>
-                                                    @else
+                                                    <div class="flex flex-col">
                                                         <span class="text-red-600 font-medium text-sm">
                                                             ID: {{ $request->id }} - Permohonan ditolak
                                                         </span>
-                                                    @endif
+                                                        @if($request->remarks)
+                                                            <span class="text-red-500 text-xs mt-1">
+                                                                Catatan: {{ $request->remarks }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>

@@ -56,7 +56,12 @@
                                     @elseif($borrowingRequest->status === 'returned') bg-blue-100 text-blue-800
                                     @else bg-red-100 text-red-800
                                     @endif">
-                                    {{ ucfirst($borrowingRequest->status) }}
+                                    @if($borrowingRequest->status === 'pending') Dalam Proses
+                                    @elseif($borrowingRequest->status === 'approved') Diluluskan
+                                    @elseif($borrowingRequest->status === 'rejected') Ditolak
+                                    @elseif($borrowingRequest->status === 'returned') Dipulangkan
+                                    @else {{ ucfirst($borrowingRequest->status) }}
+                                    @endif
                                 </span>
                                 @if($borrowingRequest->status === 'approved' && $borrowingRequest->end_time < now() && $borrowingRequest->status !== 'returned')
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Late Return</span>
@@ -162,11 +167,11 @@
                             <div class="flex justify-end space-x-3">
                                 <button type="submit" name="action" value="rejected"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                    Reject
+                                    Ditolak
                                 </button>
                                 <button type="submit" name="action" value="approved"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                    Approve
+                                    Diluluskan
                                 </button>
                             </div>
                         </form>
@@ -183,7 +188,7 @@
                     <div class="mt-6">
                         <a href="{{ route('pengurus.inventori.permohonan.returned', $borrowingRequest->id) }}" 
                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Mark as Returned
+                            Tandakan telah dipulangkan
                         </a>
                     </div>
                 @endif
