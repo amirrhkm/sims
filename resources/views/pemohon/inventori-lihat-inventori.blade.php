@@ -68,7 +68,7 @@
                         <thead>
                             <tr class="bg-gray-50">
                                 <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nama Barang
+                                    Nama Item
                                 </th>
                                 <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Kategori
@@ -85,7 +85,16 @@
                             @forelse($inventories as $item)
                                 <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $item->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900">
+                                            @if($item->quantity > 0)
+                                                <a href="{{ route('pemohon.inventori-borang-permohonan') }}" 
+                                                   class="text-blue-600 hover:text-blue-800">
+                                                    {{ $item->name }}
+                                                </a>
+                                            @else
+                                                {{ $item->name }}
+                                            @endif
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="text-sm text-gray-600">{{ $item->category }}</div>

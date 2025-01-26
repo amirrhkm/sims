@@ -22,11 +22,26 @@
 
             <!-- Metrics Summary -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <!-- Total Items Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
+                <!-- Change Active Users Card to Total Inventory Items -->
+                <div onclick="window.location.href='{{ route('pengurus.inventori-kemaskini') }}'" 
+                     class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200 cursor-pointer">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500 mb-1">Jumlah Item</p>
+                            <p class="text-sm text-gray-500 mb-1">Keseluruhan Item</p>
+                            <p class="text-2xl font-bold text-gray-800">{{ $totalInventory }}</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-boxes text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Items Card -->
+                <div onclick="window.location.href='{{ route('pengurus.inventori-kemaskini') }}'" 
+                     class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200 cursor-pointer">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Sedia Dipinjam</p>
                             <p class="text-2xl font-bold text-gray-800">{{ $totalItems }}</p>
                         </div>
                         <div class="bg-green-100 p-3 rounded-full">
@@ -39,7 +54,7 @@
                 <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500 mb-1">Item Dipinjam</p>
+                            <p class="text-sm text-gray-500 mb-1">Dalam Pinjaman</p>
                             <p class="text-2xl font-bold text-gray-800">{{ $itemsBorrowed }}</p>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-full">
@@ -52,24 +67,11 @@
                 <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500 mb-1">Item Tertunggak</p>
+                            <p class="text-sm text-gray-500 mb-1">Pinjaman Lebih Masa</p>
                             <p class="text-2xl font-bold text-gray-800">{{ $overdueItems }}</p>
                         </div>
                         <div class="bg-red-100 p-3 rounded-full">
                             <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Users Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Pengguna Aktif</p>
-                            <p class="text-2xl font-bold text-gray-800">{{ $activeUsers }}</p>
-                        </div>
-                        <div class="bg-purple-100 p-3 rounded-full">
-                            <i class="fas fa-users text-purple-500 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -146,7 +148,7 @@
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Tersedia', 'Dipinjam', 'Tertunggak'],
+                labels: ['Sedia Dipinjam', 'Dalam Pinjaman', 'Pinjaman Lebih Masa'],
                 datasets: [{
                     data: [{{ $availableItems }}, {{ $itemsBorrowed }}, {{ $overdueItems }}],
                     backgroundColor: ['#10B981', '#3B82F6', '#EF4444'],

@@ -93,22 +93,22 @@
                                 </select>
                                 <input type="hidden" name="items[0][quantity]" value="1">
                             </div>
-                            <div class="col-span-1">
+                            <!-- <div class="col-span-1">
                                 <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
                     <!-- Add Item Button -->
-                    <div class="mb-6">
+                    <!-- <div class="mb-6">
                         <button type="button" id="addItem" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             + Tambah Item
                         </button>
-                    </div>
+                    </div> -->
 
                     <!-- Submit Button -->
                     <div class="flex items-center justify-end">

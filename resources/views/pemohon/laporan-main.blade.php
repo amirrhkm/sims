@@ -46,15 +46,49 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-lg p-6">
+      <!-- Update Month Filter to Date Range -->
+      <div class="mb-6">
+        <form id="filterForm" class="flex gap-4 items-center">
+          <div class="flex-1 max-w-xs">
+            <label for="startMonth" class="block text-sm font-medium text-gray-700 mb-1">Dari Bulan:</label>
+            <input type="month" 
+                   id="startMonth" 
+                   name="startMonth" 
+                   class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   value="{{ request('startMonth', date('Y-m')) }}">
+          </div>
+          <div class="flex-1 max-w-xs">
+            <label for="endMonth" class="block text-sm font-medium text-gray-700 mb-1">Hingga Bulan:</label>
+            <input type="month" 
+                   id="endMonth" 
+                   name="endMonth" 
+                   class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   value="{{ request('endMonth', date('Y-m')) }}">
+          </div>
+          <div class="flex items-end gap-2">
+            <button type="submit" 
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+              Tapis
+            </button>
+            <button type="button" 
+                    id="resetFilter"
+                    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-200">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
       <table id="reportTable" class="w-full">
         <thead>
           <tr>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">ID</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Nama Item</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Peminjam</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Tarikh Pinjam</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Tarikh Pulang</th>
-            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b">Status</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">ID</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Nama Item</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Kategori</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Peminjam</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Tarikh Pinjam</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Tarikh Pulang</th>
+            <th class="px-4 py-3 bg-gray-100 font-semibold text-gray-600 border-b text-center">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -62,16 +96,23 @@
                 <tr class="hover:bg-gray-50">
                     <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['id'] }}</td>
                     <td class="border border-gray-300 px-4 py-3">{{ $request['nama_item'] }}</td>
-                    <td class="border border-gray-300 px-4 py-3">{{ $request['peminjam'] }}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['tarikh_pinjam'] }}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['tarikh_pulang'] }}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['kategori'] }}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['peminjam'] }}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">{{ \Carbon\Carbon::parse($request['tarikh_pinjam'])->format('d/m/Y') }}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">{{ \Carbon\Carbon::parse($request['tarikh_pulang'])->format('d/m/Y') }}</td>
                     <td class="border border-gray-300 px-4 py-3 text-center">
                         <span class="px-2 py-1 rounded-full text-xs font-semibold
-                            @if($request['status'] === 'approved') bg-green-100 text-green-800
-                            @elseif($request['status'] === 'pending') bg-yellow-100 text-yellow-800
+                            @if($request['status'] === 'approved' || $request['status'] === 'Diluluskan') bg-green-100 text-green-800
+                            @elseif($request['status'] === 'pending' || $request['status'] === 'Dalam Proses') bg-yellow-100 text-yellow-800
+                            @elseif($request['status'] === 'returned' || $request['status'] === 'Dipulangkan') bg-blue-100 text-blue-800
                             @else bg-red-100 text-red-800
                             @endif">
-                            {{ ucfirst($request['status']) }}
+                            @if($request['status'] === 'pending') Dalam Proses
+                            @elseif($request['status'] === 'approved') Diluluskan
+                            @elseif($request['status'] === 'rejected') Ditolak
+                            @elseif($request['status'] === 'returned') Dipulangkan
+                            @else {{ ucfirst($request['status']) }}
+                            @endif
                         </span>
                     </td>
                 </tr>
@@ -118,6 +159,54 @@
         pageLength: 10,
         order: [[0, 'asc']]
       });
+
+      // Update custom filtering function for date range
+      $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        const startMonth = $('#startMonth').val();
+        const endMonth = $('#endMonth').val();
+        
+        if (!startMonth && !endMonth) return true;
+
+        const dateStr = data[3]; // Index 3 is the Tarikh Pinjam column
+        const [day, month, year] = dateStr.split('/');
+        const rowDate = new Date(year, month - 1); // month - 1 because JS months are 0-based
+        
+        let startDate = startMonth ? new Date(startMonth + '-01') : null;
+        let endDate = endMonth ? new Date(endMonth + '-31') : null;
+        
+        if (startDate && endDate) {
+          return rowDate >= startDate && rowDate <= endDate;
+        } else if (startDate) {
+          return rowDate >= startDate;
+        } else if (endDate) {
+          return rowDate <= endDate;
+        }
+        
+        return true;
+      });
+
+      // Handle filter changes
+      $('#filterForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate date range
+        const startMonth = $('#startMonth').val();
+        const endMonth = $('#endMonth').val();
+        
+        if (startMonth && endMonth && startMonth > endMonth) {
+          alert('Tarikh mula tidak boleh lebih besar daripada tarikh akhir');
+          return;
+        }
+        
+        table.draw();
+      });
+
+      // Handle reset button
+      $('#resetFilter').on('click', function() {
+        $('#startMonth').val('');
+        $('#endMonth').val('');
+        table.draw();
+      });
     });
 
     document.getElementById('exportPDF').addEventListener('click', async function() {
@@ -162,7 +251,7 @@
             doc.setFontSize(10);
             
             let currentX = margin;
-            const headers = ['ID', 'Nama Item', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status'];
+            const headers = ['ID', 'Nama Item', 'Kategori', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status'];
             headers.forEach((header, i) => {
                 doc.text(header, currentX + 2, currentY);
                 currentX += colWidths[i];

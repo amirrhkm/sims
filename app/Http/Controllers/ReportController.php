@@ -17,6 +17,7 @@ class ReportController extends Controller
                 return [
                     'id' => $request->id,
                     'nama_item' => collect($items)->pluck('name')->join(', '),
+                    'kategori' => collect($items)->pluck('category')->unique()->join(', '),
                     'peminjam' => $request->user->name,
                     'tarikh_pinjam' => $request->start_time->format('Y-m-d'),
                     'tarikh_pulang' => $request->end_time->format('Y-m-d'),
@@ -38,6 +39,7 @@ class ReportController extends Controller
                 return [
                     'id' => $request->id,
                     'nama_item' => collect($items)->pluck('name')->join(', '),
+                    'kategori' => collect($items)->pluck('category')->unique()->join(', '),
                     'peminjam' => $request->user->name,
                     'tarikh_pinjam' => $request->start_time->format('Y-m-d'),
                     'tarikh_pulang' => $request->end_time->format('Y-m-d'),

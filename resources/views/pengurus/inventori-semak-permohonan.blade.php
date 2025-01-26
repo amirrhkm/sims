@@ -57,7 +57,12 @@
                                             @elseif($request->status === 'returned') bg-blue-100 text-blue-800
                                             @else bg-red-100 text-red-800
                                             @endif">
-                                            {{ ucfirst($request->status) }}
+                                            @if($request->status === 'pending') Dalam Proses
+                                            @elseif($request->status === 'approved') Diluluskan
+                                            @elseif($request->status === 'rejected') Ditolak
+                                            @elseif($request->status === 'returned') Dipulangkan
+                                            @else {{ ucfirst($request->status) }}
+                                            @endif
                                         </span>
                                         @if($request->status === 'approved' && $request->end_time < now() && $request->status !== 'returned')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Late Return</span>
