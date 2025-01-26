@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $totalItems = $this->getTotalItems();
         $itemsBorrowed = $this->getItemsBorrowed();
         $overdueItems = $this->getOverdueItems();
-        $activeUsers = $this->getActiveUsers();
+        $totalInventory = $this->getTotalInventory();
         $availableItems = $this->getAvailableItems();
         $activities = $this->getActivities();
 
@@ -23,7 +23,7 @@ class DashboardController extends Controller
             'totalItems',
             'itemsBorrowed',
             'overdueItems',
-            'activeUsers',
+            'totalInventory',
             'availableItems',
             'activities'
         ));
@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $totalItems = $this->getTotalItems();
         $itemsBorrowed = $this->getItemsBorrowed();
         $overdueItems = $this->getOverdueItems();
-        $activeUsers = $this->getActiveUsers();
+        $totalInventory = $this->getTotalInventory();
         $availableItems = $this->getAvailableItems();
         $activities = $this->getActivities();
         
@@ -42,7 +42,7 @@ class DashboardController extends Controller
             'totalItems',
             'itemsBorrowed',
             'overdueItems',
-            'activeUsers',
+            'totalInventory',
             'availableItems',
             'activities'
         ));
@@ -102,5 +102,11 @@ class DashboardController extends Controller
     {
         $availableItems = $this->getTotalItems() - ($this->getItemsBorrowed() + $this->getOverdueItems());
         return $availableItems;
+    }
+
+    private function getTotalInventory()
+    {
+        $totalInventory = $this->getTotalItems() + $this->getItemsBorrowed() + $this->getOverdueItems();
+        return $totalInventory;
     }
 }
