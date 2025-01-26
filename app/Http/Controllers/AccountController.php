@@ -36,7 +36,6 @@ class AccountController extends Controller
             'position' => 'required|string|max:255',
             'grade' => 'required|string|max:255',
             'department' => 'required|string|max:255',
-            'section' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
         ]);
 
@@ -63,7 +62,6 @@ class AccountController extends Controller
             'position' => 'required|string|max:255',
             'grade' => 'required|string|max:255',
             'department' => 'required|string|max:255',
-            'section' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
         ]);
 
@@ -74,7 +72,6 @@ class AccountController extends Controller
             'position',
             'grade',
             'department',
-            'section',
             'phone_number'
         ]);
 

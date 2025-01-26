@@ -19,15 +19,15 @@
                     </a>
                 </div>
 
-                <!-- Pengurus Table -->
+                <!-- Pentadbir Table -->
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Senarai Pengurus</h3>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Senarai Pentadbir</h3>
                     
-                    <!-- Single Search Filter for Pengurus -->
+                    <!-- Single Search Filter for Pentadbir -->
                     <div class="mb-4">
                         <input type="text" 
                                id="pengurusSearch" 
-                               placeholder="Cari pengurus..." 
+                               placeholder="Cari pentadbir..." 
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                     </div>
 
@@ -68,7 +68,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="3" class="px-6 py-4 text-center text-gray-500">Tiada pengurus dijumpai</td>
+                                    <td colspan="3" class="px-6 py-4 text-center text-gray-500">Tiada pentadbir dijumpai</td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -97,8 +97,8 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Nama</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Email</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Jabatan</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Seksyen/Unit</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Bahagian</th>
+                                    <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">Seksyen/Unit</th> -->
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Tindakan</th>
                                 </tr>
                             </thead>
@@ -108,7 +108,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->department }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->section }}</td>
+                                    <!-- <td class="px-6 py-4 whitespace-nowrap">{{ $user->section }}</td> -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
                                         <div class="flex space-x-2 justify-end">
                                             <a href="{{ route('pengurus.pengguna-edit', $user->id) }}" 

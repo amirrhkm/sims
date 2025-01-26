@@ -50,7 +50,7 @@
                                 required>
                             <option value="">Pilih Peranan</option>
                             <option value="pemohon">Pemohon</option>
-                            <option value="pengurus">Pengurus</option>
+                            <option value="pengurus">Pentadbir</option>
                         </select>
                     </div>
 
@@ -72,33 +72,44 @@
 
                     <!-- Department Dropdown -->
                     <div class="mb-4">
-                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Jabatan</label>
+                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Bahagian</label>
                         <select name="department" id="department" 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                 required
                                 onchange="updateSections()">
-                            <option value="">Pilih Jabatan</option>
-                            <option value="Bahagian Korporat">Bahagian Korporat</option>
-                            <option value="Bahagian Khidmat Pengurusan">Bahagian Khidmat Pengurusan</option>
-                            <option value="Unit Integriti">Unit Integriti</option>
-                            <option value="Bahagian Rancangan Fizikal Negara">Bahagian Rancangan Fizikal Negara</option>
-                            <option value="Bahagian Perancangan Wilayah">Bahagian Perancangan Wilayah</option>
-                            <option value="Bahagian Rancangan Pembangunan">Bahagian Rancangan Pembangunan</option>
-                            <option value="Bahagian Penyelidikan dan Pembangunan">Bahagian Penyelidikan dan Pembangunan</option>
-                            <option value="Bahagian Perundangan dan Kawal Selia Perancangan">Bahagian Perundangan dan Kawal Selia Perancangan</option>
-                            <option value="Bahagian Maklumat Gunatanah Negara">Bahagian Maklumat Gunatanah Negara</option>
+                            <option value="">Pilih Bahagian</option>
+                            <option value="Pejabat Ketua Pengarah">PEJABAT KETUA PENGARAH</option>
+                            <option value="Pejabat Timbalan Ketua Pengarah">PEJABAT TIMBALAN KETUA PENGARAH (PERANCANGAN)</option>
+                            <option value="Pejabat Timbalan Ketua Pengarah">PEJABAT TIMBALAN KETUA PENGARAH (PEMBANGUNAN)</option>
+                            <option value="Bahagian Penyelidikan dan Pembangunan">BAHAGIAN PENYELIDIKAN DAN PEMBANGUNAN</option>
+                            <option value="Bahagian Rancangan Fizikal Negara">BAHAGIAN RANCANGAN FIZIKAL NEGARA</option>
+                            <option value="Bahagian Maklumat Gunatanah Negara">BAHAGIAN MAKLUMAT GUNATANAH NEGARA</option>
+                            <option value="Bahagian Perancangan Wilayah">BAHAGIAN PERANCANGAN WILAYAH</option>
+                            <option value="Bahagian Perundangan dan Kawal Selia Perancangan">BAHAGIAN PERUNDANGAN DAN KAWAL SELIA PERANCANGAN</option>
+                            <option value="Bahagian Korporat">BAHAGIAN KORPORAT</option>
+                            <option value="Bahagian Khidmat Pengurusan">BAHAGIAN KHIDMAT PENGURUSAN</option>
+                            <option value="Bahagian Khidmat Pengurusan">BAHAGIAN KHIDMAT PENGURUSAN - SEKSYEN PENTADBIRAN</option>
+                            <option value="Bahagian Khidmat Pengurusan">BAHAGIAN KHIDMAT PENGURUSAN - SEKSYEN KEWANGAN</option>
+                            <option value="Bahagian Khidmat Pengurusan">BAHAGIAN KHIDMAT PENGURUSAN - SEKSYEN SUMBER MANUSIA</option>
+                            <option value="Bahagian Khidmat Pengurusan">BAHAGIAN KHIDMAT PENGURUSAN - SEKSYEN TEKNOLOGI MAKLUMAT</option>
+                            <option value="Pejabat Projek Zon Selatan">PEJABAT PROJEK ZON SELATAN</option>
+                            <option value="Pejabat Projek Zon Utara">PEJABAT PROJEK ZON UTARA</option>
+                            <option value="Pejabat Projek Zon Tengah">PEJABAT PROJEK ZON TENGAH</option>
+                            <option value="Pejabat Projek Zon Timur">PEJABAT PROJEK ZON TIMUR</option>
+                            <option value="Unit Penyelarasan Projek">UNIT PENYELARAAN PROJEK</option>
+                            <option value="Unit Integriti">UNIT INTEGRITI</option>
                         </select>
                     </div>
 
                     <!-- Section Dropdown -->
-                    <div class="mb-4">
+                    <!-- <div class="mb-4">
                         <label for="section" class="block text-gray-700 text-sm font-bold mb-2">Seksyen</label>
                         <select name="section" id="section" 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                 required>
                             <option value="">Pilih Seksyen/Unit</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <!-- Phone Number -->
                     <div class="mb-6">
@@ -202,29 +213,29 @@
 
     function updateSections() {
         const departmentSelect = document.getElementById('department');
-        const sectionSelect = document.getElementById('section');
+        // const sectionSelect = document.getElementById('section');
         const selectedDepartment = departmentSelect.value;
         
         // Clear current options
-        sectionSelect.innerHTML = '<option value="">Pilih Seksyen/Unit</option>';
+        // sectionSelect.innerHTML = '<option value="">Pilih Seksyen/Unit</option>';
         
         // Add new options based on selected department
-        if (selectedDepartment && departmentSections[selectedDepartment]) {
+        /* if (selectedDepartment && departmentSections[selectedDepartment]) {
             departmentSections[selectedDepartment].forEach(section => {
                 const option = document.createElement('option');
                 option.value = section;
                 option.textContent = section;
                 sectionSelect.appendChild(option);
             });
-        }
+        } */
     }
 
     // For edit form, set initial values
     @if(isset($user))
     window.onload = function() {
         document.getElementById('department').value = "{{ $user->department }}";
-        updateSections();
-        document.getElementById('section').value = "{{ $user->section }}";
+        // updateSections();
+        // document.getElementById('section').value = "{{ $user->section }}";
     }
     @endif
     </script>
