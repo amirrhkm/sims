@@ -95,9 +95,9 @@
                             @else bg-red-100 text-red-800
                             @endif">
                             @if($request['status'] === 'pending') Dalam Proses
-                            @elseif($request['status'] === 'approved') Diluluskan
-                            @elseif($request['status'] === 'rejected') Ditolak
-                            @elseif($request['status'] === 'returned') Dipulangkan
+                            @elseif($request['status'] === 'approved') Lulus
+                            @elseif($request['status'] === 'rejected') Tolak
+                            @elseif($request['status'] === 'returned') Pinjaman Tamat
                             @else {{ ucfirst($request['status']) }}
                             @endif
                         </span>
@@ -343,17 +343,17 @@
     document.getElementById('exportExcel').addEventListener('click', () => {
       const table = document.getElementById("reportTable");
       const ws_data = [
-        ['ID', 'Nama Item', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status']
+        ['ID', 'Nama Item', 'Kategori', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status']
       ];
 
       // Get all rows except header
       const rows = Array.from(table.querySelectorAll('tbody tr'));
       
       rows.forEach(row => {
-        const rowData = Array.from(row.querySelectorAll('td')).map(cell => {
-          // For status column, get the text content without extra spaces
-          if (cell.querySelector('.rounded-full')) {
-            return cell.querySelector('.rounded-full').textContent.trim();
+        const rowData = Array.from(row.querySelectorAll('td')).map((cell, index) => {
+          // For status column (last column)
+          if (index === 6) {
+            return cell.querySelector('.rounded-full')?.textContent.trim() || cell.textContent.trim();
           }
           return cell.textContent.trim();
         });
@@ -363,22 +363,39 @@
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet(ws_data);
 
+      // Add column widths
+      const colWidths = [
+        { wch: 10 },  // ID
+        { wch: 30 },  // Nama Item
+        { wch: 20 },  // Kategori
+        { wch: 20 },  // Peminjam
+        { wch: 15 },  // Tarikh Pinjam
+        { wch: 15 },  // Tarikh Pulang
+        { wch: 15 }   // Status
+      ];
+      ws['!cols'] = colWidths;
+
       // Add some styling
       const headerStyle = {
-        font: { bold: true },
-        fill: { fgColor: { rgb: "DDEBF7" } },
-        alignment: { horizontal: "center" }
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "1E40AF" } }, // Blue background
+        alignment: { horizontal: "center", vertical: "center" }
       };
 
       // Apply styles to header row
       const range = XLSX.utils.decode_range(ws['!ref']);
       for (let C = range.s.c; C <= range.e.c; ++C) {
         const address = XLSX.utils.encode_cell({ r: 0, c: C });
+        if (!ws[address]) ws[address] = {};
         ws[address].s = headerStyle;
       }
 
       XLSX.utils.book_append_sheet(wb, ws, "Laporan Inventori");
-      XLSX.writeFile(wb, "laporan_inventori.xlsx");
+      
+      // Generate timestamp for filename
+      const now = new Date();
+      const timestamp = now.toISOString().split('T')[0];
+      XLSX.writeFile(wb, `laporan_inventori_${timestamp}.xlsx`);
     });
   </script>
 </body>

@@ -24,7 +24,7 @@
                 <!-- Header -->
                 <div class="gradient-header rounded-lg shadow-lg p-6 mb-8 text-white">
                     <h1 class="text-3xl font-bold">Senarai Permohonan</h1>
-                    <p class="text-gray-100 mt-2">Senarai permohonan peminjaman inventori anda</p>
+                    <p class="text-gray-100 mt-2">Senarai permohonan pinjaman inventori</p>
                 </div>
 
                 <!-- Notifications -->
@@ -59,6 +59,9 @@
                                     </th>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Status
+                                    </th>
+                                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        Catatan
                                     </th>
                                     <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         Tindakan
@@ -97,19 +100,30 @@
                                             </ul>
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($request->status === 'approved') bg-green-100 text-green-800
-                                                @elseif($request->status === 'rejected') bg-red-100 text-red-800
-                                                @elseif($request->status === 'returned') bg-blue-100 text-blue-800
-                                                @else bg-yellow-100 text-yellow-800
-                                                @endif">
-                                                @if($request->status === 'pending') Dalam Proses
-                                                @elseif($request->status === 'approved') Diluluskan
-                                                @elseif($request->status === 'rejected') Ditolak
-                                                @elseif($request->status === 'returned') Dipulangkan
-                                                @else {{ $request->status }}
-                                                @endif
-                                            </span>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                    @if($request->status === 'approved') bg-green-100 text-green-800
+                                                    @elseif($request->status === 'rejected') bg-red-100 text-red-800
+                                                    @elseif($request->status === 'returned') bg-blue-100 text-blue-800
+                                                    @else bg-yellow-100 text-yellow-800
+                                                    @endif">
+                                                    @if($request->status === 'pending') Dalam Proses
+                                                    @elseif($request->status === 'approved') Lulus
+                                                    @elseif($request->status === 'rejected') Tolak
+                                                    @elseif($request->status === 'returned') Pinjaman Tamat
+                                                    @else {{ $request->status }}
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            @if($request->remarks)
+                                                <span class="text-black-500 text-xs">
+                                                    {{ $request->remarks }}
+                                                </span>
+                                            @else
+                                                <span class="text-gray-400 text-xs">-</span>
+                                            @endif
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             @if($request->status === 'pending')
@@ -127,9 +141,9 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @if ($request->status === 'rejected')
+                                    <!-- @if ($request->status === 'rejected')
                                         <tr>
-                                            <td colspan="6" class="px-5 py-1 border-b border-gray-200 bg-red-50">
+                                            <td colspan="7" class="px-5 py-1 border-b border-gray-200 bg-red-50">
                                                 <div class="flex items-center">
                                                     <svg class="w-4 h-4 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
@@ -147,10 +161,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endif
+                                    @endif --> 
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                        <td colspan="7" class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                                             Tiada permohonan dijumpai.
                                         </td>
                                     </tr>

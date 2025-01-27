@@ -53,14 +53,14 @@
                                     @else bg-red-100 text-red-800
                                     @endif">
                                     @if($borrowingRequest->status === 'pending') Dalam Proses
-                                    @elseif($borrowingRequest->status === 'approved') Diluluskan
+                                    @elseif($borrowingRequest->status === 'approved') Lulus
                                     @elseif($borrowingRequest->status === 'rejected') Ditolak
-                                    @elseif($borrowingRequest->status === 'returned') Dipulangkan
+                                    @elseif($borrowingRequest->status === 'returned') Pinjaman Tamat
                                     @else {{ ucfirst($borrowingRequest->status) }}
                                     @endif
                                 </span>
                                 @if($borrowingRequest->status === 'approved' && $borrowingRequest->end_time < now() && $borrowingRequest->status !== 'returned')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Lambat Pulang</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Pinjaman Melebihi Tempoh</span>
                                 @endif
                             </p>
                         </div>
@@ -124,12 +124,12 @@
 
                 <!-- Items List -->
                 <div class="bg-white shadow rounded-lg p-6 mb-6">
-                    <h2 class="text-lg font-medium text-gray-900 mb-4">Senarai Barang</h2>
+                    <h2 class="text-lg font-medium text-gray-900 mb-4">Senarai Item</h2>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Barang</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Item</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kuantiti</th>
                                 </tr>
@@ -181,11 +181,11 @@
                             <div class="flex justify-end space-x-3">
                                 <button type="submit" name="action" value="rejected"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                    Ditolak
+                                    Tolak
                                 </button>
                                 <button type="submit" name="action" value="approved"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                    Diluluskan
+                                    Lulus
                                 </button>
                             </div>
                         </form>
@@ -202,7 +202,7 @@
                     <div class="mt-6">
                         <a href="{{ route('pengurus.inventori.permohonan.returned', $borrowingRequest->id) }}" 
                             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Tandakan telah dipulangkan
+                            Tandakan pinjaman telah tamat
                         </a>
                     </div>
                 @endif
