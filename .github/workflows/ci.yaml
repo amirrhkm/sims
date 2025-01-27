@@ -1,0 +1,43 @@
+name: Sims Deployment CI
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Get tag
+        id: get_tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+      - name: Update version in files
+        run: |
+          # Update version in pengurus sidebar
+          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pengurus-sidebar.blade.php
+          
+          # Update version in pemohon sidebar
+          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pemohon-sidebar.blade.php
+          
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Commit and push changes
+        run: |
+          git checkout -b production
+          git add resources/views/components/pengurus-sidebar.blade.php
+          git add resources/views/components/pemohon-sidebar.blade.php
+          git commit -m "Update APP_VERSION to ${{ steps.get_tag.outputs.TAG }}"
+          git push origin production --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
