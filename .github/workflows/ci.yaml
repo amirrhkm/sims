@@ -6,7 +6,7 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  update-version:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -42,3 +42,24 @@ jobs:
           git push origin production --force
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/sims
+            # Reset any local changes and force match with origin/production
+            git fetch origin production
+            git reset --hard origin/production
+            # Configure git to avoid divergent branch issues
+            git config pull.rebase false
+            # Pull changes (should be clean now)
+            git pull origin production
