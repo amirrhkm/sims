@@ -31,10 +31,18 @@ jobs:
           git fetch origin production || git checkout -b production
           git checkout production
           
-          # Merge the tagged commit into production
-          git merge ${{ steps.get_tag.outputs.TAG }} --no-ff -m "Merge tag ${{ steps.get_tag.outputs.TAG }} into production"
+          # Temporarily store production versions of the files
+          cp resources/views/components/pengurus-sidebar.blade.php pengurus-sidebar.temp
+          cp resources/views/components/pemohon-sidebar.blade.php pemohon-sidebar.temp
           
-          # Update version in files after merge
+          # Merge the tagged commit into production
+          git merge ${{ steps.get_tag.outputs.TAG }} --strategy-option ours --no-ff -m "Merge tag ${{ steps.get_tag.outputs.TAG }} into production"
+          
+          # Restore the production versions
+          cp pengurus-sidebar.temp resources/views/components/pengurus-sidebar.blade.php
+          cp pemohon-sidebar.temp resources/views/components/pemohon-sidebar.blade.php
+          
+          # Update version in files
           sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pengurus-sidebar.blade.php
           sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pemohon-sidebar.blade.php
           
