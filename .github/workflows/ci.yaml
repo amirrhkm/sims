@@ -20,14 +20,6 @@ jobs:
         id: get_tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
       
-      - name: Update version in files
-        run: |
-          # Update version in pengurus sidebar
-          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pengurus-sidebar.blade.php
-          
-          # Update version in pemohon sidebar
-          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pemohon-sidebar.blade.php
-          
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions Bot"
@@ -35,11 +27,35 @@ jobs:
           
       - name: Commit and push changes
         run: |
-          git checkout -b production
-          git add resources/views/components/pengurus-sidebar.blade.php
-          git add resources/views/components/pemohon-sidebar.blade.php
-          git commit -m "Update APP_VERSION to ${{ steps.get_tag.outputs.TAG }}"
-          git push origin production --force
+          # Fetch production branch or create if it doesn't exist
+          git fetch origin production || git checkout -b production
+          git checkout production
+          
+          # Temporarily store production versions of the files
+          cp resources/views/components/pengurus-sidebar.blade.php pengurus-sidebar.temp
+          cp resources/views/components/pemohon-sidebar.blade.php pemohon-sidebar.temp
+          
+          # Merge the tagged commit into production
+          git merge ${{ steps.get_tag.outputs.TAG }} --strategy-option ours --no-ff -m "Merge tag ${{ steps.get_tag.outputs.TAG }} into production"
+          
+          # Restore the production versions
+          cp pengurus-sidebar.temp resources/views/components/pengurus-sidebar.blade.php
+          cp pemohon-sidebar.temp resources/views/components/pemohon-sidebar.blade.php
+          
+          # Clean up temp files
+          rm pengurus-sidebar.temp pemohon-sidebar.temp
+          
+          # Update version in files
+          sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ steps.get_tag.outputs.TAG }}/" resources/views/components/pengurus-sidebar.blade.php
+          sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ steps.get_tag.outputs.TAG }}/" resources/views/components/pemohon-sidebar.blade.php
+          
+          # Force add the version updates (in case of no changes)
+          git add -f resources/views/components/pengurus-sidebar.blade.php
+          git add -f resources/views/components/pemohon-sidebar.blade.php
+          git commit -m "Update APP_VERSION to ${{ steps.get_tag.outputs.TAG }}" || echo "No version changes to commit"
+          
+          # Push to production
+          git push origin production
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
@@ -56,10 +72,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /var/www/sims
-            # Reset any local changes and force match with origin/production
             git fetch origin production
             git reset --hard origin/production
+            
             # Configure git to avoid divergent branch issues
             git config pull.rebase false
+
             # Pull changes (should be clean now)
             git pull origin production
