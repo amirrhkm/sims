@@ -58,14 +58,14 @@
                                             @else bg-red-100 text-red-800
                                             @endif">
                                             @if($request->status === 'pending') Dalam Proses
-                                            @elseif($request->status === 'approved') Diluluskan
-                                            @elseif($request->status === 'rejected') Ditolak
-                                            @elseif($request->status === 'returned') Dipulangkan
+                                            @elseif($request->status === 'approved') Lulus
+                                            @elseif($request->status === 'rejected') Tolak
+                                            @elseif($request->status === 'returned') Pinjaman Tamat
                                             @else {{ ucfirst($request->status) }}
                                             @endif
                                         </span>
                                         @if($request->status === 'approved' && $request->end_time < now() && $request->status !== 'returned')
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Lambat Pulang</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Pinjaman Melebihi Tempoh</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

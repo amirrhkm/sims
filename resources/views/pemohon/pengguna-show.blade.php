@@ -82,16 +82,8 @@
                                 <div class="flex items-center space-x-3">
                                     <i class="fas fa-building text-gray-400 w-5"></i>
                                     <div>
-                                        <p class="text-sm text-gray-500">Jabatan</p>
-                                        <p class="text-gray-900">{{ $user->department }}</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-sitemap text-gray-400 w-5"></i>
-                                    <div>
                                         <p class="text-sm text-gray-500">Bahagian</p>
-                                        <p class="text-gray-900">{{ $user->section }}</p>
+                                        <p class="text-gray-900">{{ $user->department }}</p>
                                     </div>
                                 </div>
                             </div>

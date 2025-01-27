@@ -1,7 +1,7 @@
 # Smart Inventory Management System (SIMS)
 
 - Code by: `Amirul Hazim`
-- Designed, Reviewed and Managed by: `Amir Nurhakim`
+- Designed, Reviewed, CI/CD pipeline and Infrastructure prepared by: `Amir Nurhakim`
 
 ## Deployment
 - Manual deployment with PR to `production` branch

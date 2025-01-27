@@ -127,6 +127,11 @@
                                                         <i class="fas fa-times-circle mr-1"></i>
                                                         Permohonan ditolak
                                                     </span>
+                                                @elseif($activity->type === 'borrowing_request_returned')
+                                                    <span class="text-neutral-600">
+                                                        <i class="fas fa-minus-circle mr-1"></i>
+                                                        Pinjaman Tamat
+                                                    </span>
                                                 @else
                                                     {{ $activity->description }}
                                                 @endif
