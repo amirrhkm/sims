@@ -46,37 +46,24 @@
     </div>
 
     <div class="bg-white rounded-lg shadow-lg p-6">
-      <!-- Update Month Filter to Date Range -->
-      <div class="mb-6">
-        <form id="filterForm" class="flex gap-4 items-center">
-          <div class="flex-1 max-w-xs">
-            <label for="startMonth" class="block text-sm font-medium text-gray-700 mb-1">Dari Bulan:</label>
-            <input type="month" 
-                   id="startMonth" 
-                   name="startMonth" 
-                   class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                   value="{{ request('startMonth', date('Y-m')) }}">
-          </div>
-          <div class="flex-1 max-w-xs">
-            <label for="endMonth" class="block text-sm font-medium text-gray-700 mb-1">Hingga Bulan:</label>
-            <input type="month" 
-                   id="endMonth" 
-                   name="endMonth" 
-                   class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                   value="{{ request('endMonth', date('Y-m')) }}">
-          </div>
-          <div class="flex items-end gap-2">
-            <button type="submit" 
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-              Tapis
-            </button>
-            <button type="button" 
-                    id="resetFilter"
-                    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-200">
-              Reset
-            </button>
-          </div>
-        </form>
+      <!-- Add Month Range Filter -->
+      <div class="mb-6 flex gap-4 items-end">
+        <div>
+          <label for="startMonth" class="block text-sm font-medium text-gray-700 mb-1">Dari Bulan</label>
+          <input type="month" id="startMonth" name="startMonth" 
+                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+        <div>
+          <label for="endMonth" class="block text-sm font-medium text-gray-700 mb-1">Hingga Bulan</label>
+          <input type="month" id="endMonth" name="endMonth" 
+                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+        <button id="filterDate" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          Tapis
+        </button>
+        <button id="resetFilter" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
+          Reset
+        </button>
       </div>
 
       <table id="reportTable" class="w-full">
@@ -96,7 +83,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['id'] }}</td>
                     <td class="border border-gray-300 px-4 py-3">{{ $request['nama_item'] }}</td>
-                    <td class="border border-gray-300 px-4 py-3">{{ $request['kategori'] }}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['kategori'] }}</td>
                     <td class="border border-gray-300 px-4 py-3 text-center">{{ $request['peminjam'] }}</td>
                     <td class="border border-gray-300 px-4 py-3 text-center">{{ \Carbon\Carbon::parse($request['tarikh_pinjam'])->format('d/m/Y') }}</td>
                     <td class="border border-gray-300 px-4 py-3 text-center">{{ \Carbon\Carbon::parse($request['tarikh_pulang'])->format('d/m/Y') }}</td>
@@ -160,48 +147,64 @@
         order: [[0, 'asc']]
       });
 
-      // Update custom filtering function for date range
+      // Completely revised date range filtering
       $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-        const startMonth = $('#startMonth').val();
-        const endMonth = $('#endMonth').val();
+        const startMonthStr = $('#startMonth').val();
+        const endMonthStr = $('#endMonth').val();
         
-        if (!startMonth && !endMonth) return true;
-
-        const dateStr = data[3]; // Index 3 is the Tarikh Pinjam column
-        const [day, month, year] = dateStr.split('/');
-        const rowDate = new Date(year, month - 1); // month - 1 because JS months are 0-based
-        
-        let startDate = startMonth ? new Date(startMonth + '-01') : null;
-        let endDate = endMonth ? new Date(endMonth + '-31') : null;
-        
-        if (startDate && endDate) {
-          return rowDate >= startDate && rowDate <= endDate;
-        } else if (startDate) {
-          return rowDate >= startDate;
-        } else if (endDate) {
-          return rowDate <= endDate;
+        // If no dates selected, show all rows
+        if (!startMonthStr && !endMonthStr) {
+          return true;
         }
-        
-        return true;
+
+        // Get the date from the row
+        const dateStr = data[4]; // Format: dd/mm/yyyy
+        if (!dateStr) {
+          return true;
+        }
+
+        try {
+          // Parse the row date
+          const [rowDay, rowMonth, rowYear] = dateStr.split('/').map(Number);
+          
+          // Create Date object for row (set to 1st of month for consistent comparison)
+          const rowDate = new Date(rowYear, rowMonth - 1);
+          
+          // Parse start date
+          let startDate = null;
+          if (startMonthStr) {
+            const [startYear, startMonth] = startMonthStr.split('-').map(Number);
+            startDate = new Date(startYear, startMonth - 1);
+          }
+          
+          // Parse end date
+          let endDate = null;
+          if (endMonthStr) {
+            const [endYear, endMonth] = endMonthStr.split('-').map(Number);
+            endDate = new Date(endYear, endMonth - 1);
+            // Move to last day of end month
+            endDate.setMonth(endDate.getMonth() + 1);
+            endDate.setDate(0);
+          }
+
+          // Compare dates
+          const isAfterStart = !startDate || rowDate >= startDate;
+          const isBeforeEnd = !endDate || rowDate <= endDate;
+
+          return isAfterStart && isBeforeEnd;
+
+        } catch (e) {
+          console.error('Date parsing error:', e);
+          return true;
+        }
       });
 
-      // Handle filter changes
-      $('#filterForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        // Validate date range
-        const startMonth = $('#startMonth').val();
-        const endMonth = $('#endMonth').val();
-        
-        if (startMonth && endMonth && startMonth > endMonth) {
-          alert('Tarikh mula tidak boleh lebih besar daripada tarikh akhir');
-          return;
-        }
-        
+      // Handle filter button click
+      $('#filterDate').on('click', function() {
         table.draw();
       });
 
-      // Handle reset button
+      // Handle reset button click
       $('#resetFilter').on('click', function() {
         $('#startMonth').val('');
         $('#endMonth').val('');
@@ -241,10 +244,10 @@
 
             // Table headers
             let currentY = 50;
-            const margin = 20;
+            const margin = 5;
             
             doc.setFillColor(241, 245, 249);
-            doc.rect(margin, currentY - 5, 170, 10, 'F');
+            doc.rect(margin, currentY - 5, 200, 10, 'F');
             
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(71, 85, 105);
@@ -272,7 +275,7 @@
                     
                     // Add headers to new page
                     doc.setFillColor(241, 245, 249);
-                    doc.rect(margin, currentY - 5, 170, 10, 'F');
+                    doc.rect(margin, currentY - 5, 200, 10, 'F');
                     
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(71, 85, 105);
@@ -304,7 +307,7 @@
                 
                 // Add light gray line between rows
                 doc.setDrawColor(229, 231, 235);
-                doc.line(margin, currentY - 3, margin + 170, currentY - 3);
+                doc.line(margin, currentY - 3, margin + 200, currentY - 3);
             }
 
             // Add footer with page numbers
@@ -340,7 +343,7 @@
     document.getElementById('exportExcel').addEventListener('click', () => {
       const table = document.getElementById("reportTable");
       const ws_data = [
-        ['ID', 'Nama Item', 'Kategori', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status']
+        ['ID', 'Nama Item', 'Peminjam', 'Tarikh Pinjam', 'Tarikh Pulang', 'Status']
       ];
 
       // Get all rows except header

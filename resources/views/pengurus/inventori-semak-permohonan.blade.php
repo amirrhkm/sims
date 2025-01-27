@@ -65,7 +65,7 @@
                                             @endif
                                         </span>
                                         @if($request->status === 'approved' && $request->end_time < now() && $request->status !== 'returned')
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Late Return</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Lambat Pulang</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
