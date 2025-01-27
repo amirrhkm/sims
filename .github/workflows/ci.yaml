@@ -20,14 +20,6 @@ jobs:
         id: get_tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
       
-      - name: Update version in files
-        run: |
-          # Update version in pengurus sidebar
-          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pengurus-sidebar.blade.php
-          
-          # Update version in pemohon sidebar
-          sed -i "s/{{ APP_VERSION }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pemohon-sidebar.blade.php
-          
       - name: Configure Git
         run: |
           git config user.name "GitHub Actions Bot"
@@ -42,12 +34,16 @@ jobs:
           # Merge the tagged commit into production
           git merge ${{ steps.get_tag.outputs.TAG }} --no-ff -m "Merge tag ${{ steps.get_tag.outputs.TAG }} into production"
           
+          # Update version in files after merge
+          sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pengurus-sidebar.blade.php
+          sed -i "s/{{ 'v[0-9]\+\.[0-9]\+\.[0-9]\+'  }}/{{ '${{ steps.get_tag.outputs.TAG }}' }}/" resources/views/components/pemohon-sidebar.blade.php
+          
           # Apply version update changes
           git add resources/views/components/pengurus-sidebar.blade.php
           git add resources/views/components/pemohon-sidebar.blade.php
           git commit -m "Update APP_VERSION to ${{ steps.get_tag.outputs.TAG }}"
           
-          # Push to production (no --force needed)
+          # Push to production
           git push origin production
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
