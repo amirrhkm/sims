@@ -76,7 +76,7 @@
 
                     <!-- Department Dropdown -->
                     <div class="mb-4">
-                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Jabatan</label>
+                        <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Bahagian</label>
                         <select name="department" id="department" 
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                 value="{{ $user->department }}"

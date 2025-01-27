@@ -36,12 +36,8 @@
                             <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->user->grade }}</p>
                         </div>
                         <div>
-                            <p class="text-sm font-medium text-gray-500">Jabatan</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->user->department }}</p>
-                        </div>
-                        <div>
                             <p class="text-sm font-medium text-gray-500">Bahagian</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->user->section }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $borrowingRequest->user->department }}</p>
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">No. Telefon</p>
@@ -64,8 +60,26 @@
                                     @endif
                                 </span>
                                 @if($borrowingRequest->status === 'approved' && $borrowingRequest->end_time < now() && $borrowingRequest->status !== 'returned')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Late Return</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Lambat Pulang</span>
                                 @endif
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Tempoh Pinjaman</p>
+                            <p class="mt-1 text-sm text-gray-900">
+                                @php
+                                    $diff = $borrowingRequest->end_time->diff($borrowingRequest->start_time);
+                                    $months = $diff->m;
+                                    $days = $diff->d;
+                                    $weeks = floor($days / 7);
+                                    $remaining_days = $days % 7;
+                                    
+                                    $duration = [];
+                                    if ($months > 0) $duration[] = $months . ' bulan';
+                                    if ($weeks > 0) $duration[] = $weeks . ' minggu';
+                                    if ($remaining_days > 0) $duration[] = $remaining_days . ' hari';
+                                @endphp
+                                {{ implode(', ', $duration) }}
                             </p>
                         </div>
                         <div>
