@@ -56,6 +56,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /var/www/sims
+            # Reset any local changes and force match with origin/production
             git fetch origin production
-            git checkout production
+            git reset --hard origin/production
+            # Configure git to avoid divergent branch issues
+            git config pull.rebase false
+            # Pull changes (should be clean now)
             git pull origin production
