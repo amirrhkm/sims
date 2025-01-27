@@ -35,11 +35,20 @@ jobs:
           
       - name: Commit and push changes
         run: |
-          git checkout -b production
+          # Fetch production branch or create if it doesn't exist
+          git fetch origin production || git checkout -b production
+          git checkout production
+          
+          # Merge the tagged commit into production
+          git merge ${{ steps.get_tag.outputs.TAG }} --no-ff -m "Merge tag ${{ steps.get_tag.outputs.TAG }} into production"
+          
+          # Apply version update changes
           git add resources/views/components/pengurus-sidebar.blade.php
           git add resources/views/components/pemohon-sidebar.blade.php
           git commit -m "Update APP_VERSION to ${{ steps.get_tag.outputs.TAG }}"
-          git push origin production --force
+          
+          # Push to production (no --force needed)
+          git push origin production
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
@@ -56,10 +65,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /var/www/sims
-            # Reset any local changes and force match with origin/production
             git fetch origin production
             git reset --hard origin/production
+            
             # Configure git to avoid divergent branch issues
             git config pull.rebase false
+
             # Pull changes (should be clean now)
             git pull origin production
