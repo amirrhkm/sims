@@ -4,7 +4,7 @@
 - Designed, Reviewed, CI/CD pipeline and Infrastructure prepared by: `Amir Nurhakim`
 
 ## Deployment
-- Manual deployment with PR to `production` branch
+- Tagged commit with regex `vXX.XX.XX` following SemVer.
 
 ## Development Setup Guidelines
 
